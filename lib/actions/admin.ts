@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import type { Listing } from "@/lib/types";
+import { sendListingApprovedNotification } from "@/lib/email";
 
 export async function getPendingListings(): Promise<Listing[]> {
   const supabase = await createClient();
@@ -58,7 +59,16 @@ export async function approveListing(id: string) {
     .update({ status: "approved" })
     .eq("id", id);
 
-  // TODO: Send approval email to artist
+  // Send approval email to artist
+  const { data: listing } = await supabase
+    .from("listings")
+    .select("name, contact_email")
+    .eq("id", id)
+    .single();
+
+  if (listing?.contact_email) {
+    await sendListingApprovedNotification(listing.name, listing.contact_email);
+  }
 
   revalidatePath("/admin");
   revalidatePath("/");

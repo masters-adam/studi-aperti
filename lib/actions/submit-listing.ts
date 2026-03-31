@@ -2,6 +2,7 @@
 
 import { createServiceClient } from "@/lib/supabase/server";
 import bcrypt from "bcryptjs";
+import { sendNewListingNotification } from "@/lib/email";
 
 type SubmitData = {
   name: string;
@@ -46,7 +47,14 @@ export async function submitListing(
     return { success: false, error: "Failed to submit listing. Please try again." };
   }
 
-  // TODO: Send email notification to admins
+  // Notify admins
+  const { data: admins } = await supabase.from("admins").select("email");
+  if (admins && admins.length > 0) {
+    await sendNewListingNotification(
+      data.name,
+      admins.map((a) => a.email)
+    );
+  }
 
   return { success: true };
 }
