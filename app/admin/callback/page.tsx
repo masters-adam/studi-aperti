@@ -1,71 +1,88 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
-export default function AdminCallbackPage() {
+function CallbackHandler() {
   const [error, setError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const supabase = createClient();
+    const code = searchParams.get("code");
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        if (event === "SIGNED_IN" && session) {
-          // Verify user is an admin
-          const { data: admin } = await supabase
-            .from("admins")
-            .select("id")
-            .eq("id", session.user.id)
-            .single();
-
-          if (!admin) {
-            await supabase.auth.signOut();
-            setError("You are not authorized as an admin.");
-            return;
-          }
-
-          // Full page navigation so middleware picks up the new cookies
-          window.location.href = "/admin";
+    const processAuth = async () => {
+      // If there's a code param (PKCE flow), exchange it for a session
+      if (code) {
+        const { error: exchangeError } =
+          await supabase.auth.exchangeCodeForSession(code);
+        if (exchangeError) {
+          setError("Login failed: " + exchangeError.message);
+          return;
         }
       }
-    );
 
-    // Fallback: if onAuthStateChange doesn't fire (e.g., already signed in)
-    const timeout = setTimeout(async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      // Check if we have a session now
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
       if (session) {
-        window.location.href = "/admin";
-      } else {
-        setError("Login failed or link expired. Please try again.");
-      }
-    }, 5000);
+        const { data: admin } = await supabase
+          .from("admins")
+          .select("id")
+          .eq("id", session.user.id)
+          .single();
 
-    return () => {
-      subscription.unsubscribe();
-      clearTimeout(timeout);
+        if (!admin) {
+          await supabase.auth.signOut();
+          setError("You are not authorized as an admin.");
+          return;
+        }
+
+        window.location.href = "/admin";
+        return;
+      }
+
+      // Fallback: listen for hash token (implicit flow)
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange(async (event, sess) => {
+        if (event === "SIGNED_IN" && sess) {
+          window.location.href = "/admin";
+        }
+      });
+
+      setTimeout(() => {
+        subscription.unsubscribe();
+        setError("Login failed or link expired. Please try again.");
+      }, 5000);
     };
-  }, []);
+
+    processAuth();
+  }, [searchParams]);
 
   if (error) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-cream px-4">
-        <div className="rounded-xl bg-white p-6 shadow-sm text-center max-w-sm">
-          <p className="text-red-600 mb-4">{error}</p>
-          <a
-            href="/admin/login"
-            className="text-sm text-terracotta hover:underline"
-          >
-            Back to login
-          </a>
-        </div>
+      <div className="rounded-xl bg-white p-6 shadow-sm text-center max-w-sm">
+        <p className="text-red-600 mb-4">{error}</p>
+        <a href="/admin/login" className="text-sm text-terracotta hover:underline">
+          Back to login
+        </a>
       </div>
     );
   }
 
+  return <p className="text-warm-gray">Signing you in...</p>;
+}
+
+export default function AdminCallbackPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-cream">
-      <p className="text-warm-gray">Signing you in...</p>
+    <div className="flex min-h-screen items-center justify-center bg-cream px-4">
+      <Suspense fallback={<p className="text-warm-gray">Loading...</p>}>
+        <CallbackHandler />
+      </Suspense>
     </div>
   );
 }
