@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #FDF6EE;
+  --color-cream-dark: #F5EDE3;
+  --color-terracotta: #C75B39;
+  --color-terracotta-dark: #A84B2F;
+  --color-terracotta-light: #E8A690;
+  --color-olive: #6B7F3B;
+  --color-olive-dark: #556432;
+  --color-olive-light: #A3B574;
+  --color-charcoal: #3D3D3D;
+  --color-warm-gray: #8C8579;
+  --color-warm-gray-light: #C4BDB5;
+
+  --font-heading: "DM Serif Display", Georgia, serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-cream);
+  color: var(--color-charcoal);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}

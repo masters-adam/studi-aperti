@@ -1,0 +1,54 @@
+[
+  {
+    "name": "Artisti Al Monte",
+    "description": "",
+    "address": "Palazzo Museo Bourbon del Monte, Via del Castello, Palazzo, Monte Santa Maria Tiberina, Perugia, Umbria, 06010, Italy",
+    "lat": 43.43784116247503,
+    "lng": 12.162257067393512,
+    "contact_email": "",
+    "contact_phone": "",
+    "website": "",
+    "tags": [],
+    "images": [],
+    "source_wp_id": 74
+  },
+  {
+    "name": "Caffè San Francesco",
+    "description": "",
+    "address": "Via San Francesco, Città di Castello, Perugia, Umbria, 06012, Italy",
+    "lat": 43.45872551113424,
+    "lng": 12.239647640381012,
+    "contact_email": "",
+    "contact_phone": "",
+    "website": "",
+    "tags": [],
+    "images": [],
+    "source_wp_id": 72
+  },
+  {
+    "name": "CASERM ARCHEOLOGICA",
+    "description": "",
+    "address": "Frasal Informatica, 40, Via Niccolò Aggiunti, Sansepolcro, Arezzo, Tuscany, 52037, Italy",
+    "lat": 43.57222791625286,
+    "lng": 12.140122305136176,
+    "contact_email": "",
+    "contact_phone": "",
+    "website": "",
+    "tags": [],
+    "images": [],
+    "source_wp_id": 70
+  },
+  {
+    "name": "Lucy Toop's Studio",
+    "description": "",
+    "address": "Rimondato Monte Santa Maria Tiberina, Perugia, Umbria, 06010, Italy",
+    "lat": 43.43891600406117,
+    "lng": 12.11444126442075,
+    "contact_email": "",
+    "contact_phone": "",
+    "website": "",
+    "tags": [],
+    "images": [],
+    "source_wp_id": 43
+  }
+]
