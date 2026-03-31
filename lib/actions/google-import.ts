@@ -231,9 +231,14 @@ export async function importFromGoogleMaps(
 
       for (const photo of details.photos.slice(0, 5)) {
         try {
-          const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photo_reference=${photo.photo_reference}&key=${apiKey}`;
-          const photoRes = await fetch(photoUrl, { redirect: "follow" });
+          // Step 1: Get the redirect URL
+          const photoApiUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photo_reference=${photo.photo_reference}&key=${apiKey}`;
+          const redirectRes = await fetch(photoApiUrl, { redirect: "manual" });
+          const imageUrl = redirectRes.headers.get("location");
+          if (!imageUrl) continue;
 
+          // Step 2: Download from the actual image URL
+          const photoRes = await fetch(imageUrl);
           if (!photoRes.ok) continue;
 
           const arrayBuffer = await photoRes.arrayBuffer();
