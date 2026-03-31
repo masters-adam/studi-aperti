@@ -17,6 +17,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-map-gl": "^7.1.9",
+    "react-phone-number-input": "^3.4.16",
     "resend": "^4.5.2"
   },
   "devDependencies": {
@@ -25,10 +26,17 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9",
     "eslint-config-next": "^15.3.3",
     "postcss": "^8",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

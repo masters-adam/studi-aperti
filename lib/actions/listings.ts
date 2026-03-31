@@ -14,7 +14,7 @@ export async function getApprovedListings(): Promise<Listing[]> {
     .order("name");
 
   if (error) {
-    console.error("Error fetching listings:", error);
+    console.error("Error fetching listings:", error.message, error.code, error.details);
     return [];
   }
 

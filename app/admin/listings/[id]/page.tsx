@@ -4,21 +4,27 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { ListingForm, type FormData } from "@/components/listing-form";
+import { ClickableImage } from "@/components/image-lightbox";
 import {
   getListingById,
+  approveListing,
+  rejectListing,
   adminUpdateListing,
   adminRemoveListing,
   adminRestoreListing,
 } from "@/lib/actions/admin";
+import { TagBadge } from "@/components/tag-badge";
+import { AvailabilityFull } from "@/components/availability-display";
 import type { Listing } from "@/lib/types";
 
-export default function AdminEditListingPage() {
+export default function AdminListingDetailPage() {
   const params = useParams();
   const router = useRouter();
   const [listing, setListing] = useState<Listing | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [mode, setMode] = useState<"preview" | "edit">("preview");
 
   useEffect(() => {
     getListingById(params.id as string).then((data) => {
@@ -26,6 +32,22 @@ export default function AdminEditListingPage() {
       setLoading(false);
     });
   }, [params.id]);
+
+  const handleApprove = async () => {
+    if (!listing) return;
+    setSaving(true);
+    await approveListing(listing.id);
+    setSaving(false);
+    router.push("/admin");
+  };
+
+  const handleReject = async () => {
+    if (!listing || !confirm("Reject this listing?")) return;
+    setSaving(true);
+    await rejectListing(listing.id);
+    setSaving(false);
+    router.push("/admin");
+  };
 
   const handleUpdate = async (data: FormData) => {
     if (!listing) return;
@@ -48,6 +70,10 @@ export default function AdminEditListingPage() {
 
     setSaving(false);
     setMessage("Listing updated successfully!");
+    // Refresh listing data
+    const updated = await getListingById(listing.id);
+    if (updated) setListing(updated);
+    setMode("preview");
   };
 
   const handleRemove = async () => {
@@ -78,24 +104,26 @@ export default function AdminEditListingPage() {
     );
   }
 
+  const STATUS_COLORS: Record<string, string> = {
+    approved: "bg-olive-light/30 text-olive-dark",
+    pending: "bg-yellow-100 text-yellow-800",
+    rejected: "bg-red-100 text-red-700",
+    removed: "bg-warm-gray-light/30 text-warm-gray",
+  };
+
   return (
     <div className="max-w-2xl">
+      {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <Link
-          href="/admin/listings"
+          href={listing.status === "pending" ? "/admin" : "/admin/listings"}
           className="text-sm text-warm-gray hover:text-terracotta"
         >
           &larr; Back
         </Link>
-        <h1 className="text-2xl text-charcoal">Edit: {listing.name}</h1>
+        <h1 className="text-2xl text-charcoal">{listing.name}</h1>
         <span
-          className={`ml-auto rounded-full px-2.5 py-0.5 text-xs font-medium ${
-            listing.status === "approved"
-              ? "bg-olive-light/30 text-olive-dark"
-              : listing.status === "removed"
-                ? "bg-warm-gray-light/30 text-warm-gray"
-                : "bg-yellow-100 text-yellow-800"
-          }`}
+          className={`ml-auto rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_COLORS[listing.status] ?? ""}`}
         >
           {listing.status}
         </span>
@@ -107,34 +135,166 @@ export default function AdminEditListingPage() {
         </div>
       )}
 
-      <div className="rounded-xl bg-white p-6 shadow-sm">
-        <ListingForm
-          listing={listing}
-          onSubmit={handleUpdate}
-          submitLabel="Save Changes"
-          showEditCode={false}
-          loading={saving}
-        />
-      </div>
+      {mode === "preview" ? (
+        <>
+          {/* Preview / review view */}
+          <div className="rounded-xl bg-white shadow-sm overflow-hidden">
+            {/* Images */}
+            {listing.images.length > 0 && (
+              <div className="flex gap-1 overflow-x-auto">
+                {listing.images.map((src, i) => (
+                  <div
+                    key={i}
+                    className={`relative flex-shrink-0 overflow-hidden ${
+                      listing.images.length === 1 ? "w-full h-64" : "w-72 h-52"
+                    }`}
+                  >
+                    <ClickableImage
+                      src={src}
+                      alt={`${listing.name} ${i + 1}`}
+                      images={listing.images}
+                      index={i}
+                      fill
+                      className="object-cover"
+                      sizes={listing.images.length === 1 ? "640px" : "288px"}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
 
-      <div className="flex gap-3 mt-4">
-        {listing.status !== "removed" && (
-          <button
-            onClick={handleRemove}
-            className="rounded-lg border border-red-300 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
-          >
-            Remove Listing
-          </button>
-        )}
-        {listing.status === "removed" && (
-          <button
-            onClick={handleRestore}
-            className="rounded-lg bg-olive px-4 py-2 text-sm font-medium text-white hover:bg-olive-dark transition-colors"
-          >
-            Restore Listing
-          </button>
-        )}
-      </div>
+            <div className="p-6 space-y-4">
+              {/* Title + tags */}
+              <div>
+                <h2 className="text-2xl text-charcoal">{listing.name}</h2>
+                {listing.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 mt-2">
+                    {listing.tags.map((tag) => (
+                      <TagBadge key={tag} name={tag} />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Description */}
+              {listing.description && (
+                <p className="text-sm text-charcoal leading-relaxed">
+                  {listing.description}
+                </p>
+              )}
+
+              {/* Address */}
+              <div className="text-sm">
+                <h4 className="font-medium text-charcoal mb-1">Address</h4>
+                <p className="text-warm-gray">{listing.address}</p>
+                <p className="text-xs text-warm-gray mt-0.5">
+                  {listing.lat.toFixed(5)}, {listing.lng.toFixed(5)}
+                </p>
+              </div>
+
+              {/* Availability */}
+              <div>
+                <h4 className="text-sm font-medium text-charcoal mb-2">Availability</h4>
+                <AvailabilityFull availability={listing.availability} />
+              </div>
+
+              {/* Contact */}
+              <div className="text-sm">
+                <h4 className="font-medium text-charcoal mb-1">Contact</h4>
+                <div className="space-y-0.5 text-warm-gray">
+                  {listing.contact_email && <p>{listing.contact_email}</p>}
+                  {listing.contact_phone && <p>{listing.contact_phone}</p>}
+                  {listing.website && (
+                    <p>
+                      <a
+                        href={listing.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-terracotta hover:underline"
+                      >
+                        {listing.website}
+                      </a>
+                    </p>
+                  )}
+                  {!listing.contact_email && !listing.contact_phone && !listing.website && (
+                    <p className="italic">No contact info provided</p>
+                  )}
+                </div>
+              </div>
+
+              <p className="text-xs text-warm-gray pt-2 border-t border-cream-dark">
+                Submitted {new Date(listing.created_at).toLocaleDateString()}
+              </p>
+            </div>
+          </div>
+
+          {/* Action buttons */}
+          <div className="flex flex-wrap gap-3 mt-4">
+            {listing.status === "pending" && (
+              <>
+                <button
+                  onClick={handleApprove}
+                  disabled={saving}
+                  className="rounded-lg bg-olive px-5 py-2.5 text-sm font-medium text-white hover:bg-olive-dark disabled:opacity-50 transition-colors"
+                >
+                  {saving ? "..." : "Approve"}
+                </button>
+                <button
+                  onClick={handleReject}
+                  disabled={saving}
+                  className="rounded-lg border border-red-300 px-5 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-50 transition-colors"
+                >
+                  Reject
+                </button>
+              </>
+            )}
+            <button
+              onClick={() => setMode("edit")}
+              className="rounded-lg bg-terracotta px-5 py-2.5 text-sm font-medium text-white hover:bg-terracotta-dark transition-colors"
+            >
+              Edit Listing
+            </button>
+            {listing.status === "approved" && (
+              <button
+                onClick={handleRemove}
+                className="rounded-lg border border-red-300 px-5 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+              >
+                Remove
+              </button>
+            )}
+            {listing.status === "removed" && (
+              <button
+                onClick={handleRestore}
+                className="rounded-lg bg-olive px-5 py-2.5 text-sm font-medium text-white hover:bg-olive-dark transition-colors"
+              >
+                Restore
+              </button>
+            )}
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Edit mode */}
+          <div className="flex items-center gap-3 mb-4">
+            <button
+              onClick={() => setMode("preview")}
+              className="text-sm text-warm-gray hover:text-terracotta"
+            >
+              &larr; Back to preview
+            </button>
+            <h2 className="text-lg text-charcoal">Editing</h2>
+          </div>
+          <div className="rounded-xl bg-white p-6 shadow-sm">
+            <ListingForm
+              listing={listing}
+              onSubmit={handleUpdate}
+              submitLabel="Save Changes"
+              showEditCode={false}
+              loading={saving}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }

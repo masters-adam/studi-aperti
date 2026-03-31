@@ -26,3 +26,45 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Phone input styling */
+.phone-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-warm-gray-light);
+  background: white;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: var(--color-charcoal);
+}
+
+.phone-input-wrapper:focus-within {
+  border-color: var(--color-terracotta);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--color-terracotta);
+}
+
+.phone-input-wrapper .PhoneInputCountry {
+  margin-right: 0.25rem;
+}
+
+.phone-input-wrapper .PhoneInputInput {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.875rem;
+  color: var(--color-charcoal);
+  flex: 1;
+}
+
+.phone-input-wrapper .PhoneInputInput::placeholder {
+  color: var(--color-warm-gray);
+}

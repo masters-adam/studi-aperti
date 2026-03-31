@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import type { Listing, Availability } from "@/lib/types";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 import { AddressPicker } from "./address-picker";
 import { ImageUpload } from "./image-upload";
 import { AvailabilityEditor } from "./availability-editor";
@@ -88,6 +90,8 @@ export function ListingForm({
     if (!form.address.trim() || form.lat == null || form.lng == null)
       errs.push("Address with map location is required");
     if (form.images.length === 0) errs.push("At least one image is required");
+    if (!form.contact_email.trim() && !form.contact_phone.trim())
+      errs.push("At least an email or phone number is required");
     if (showEditCode) {
       if (!/^\d{4}$/.test(form.edit_code))
         errs.push("Edit code must be exactly 4 digits");
@@ -180,7 +184,7 @@ export function ListingForm({
       {/* Contact info */}
       <fieldset className="space-y-4">
         <legend className="text-sm font-medium text-charcoal">
-          Contact Information <span className="text-warm-gray font-normal">(optional)</span>
+          Contact Information * <span className="text-warm-gray font-normal">(email or phone required)</span>
         </legend>
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -196,12 +200,12 @@ export function ListingForm({
           </div>
           <div>
             <label className="mb-1 block text-xs text-warm-gray">Phone</label>
-            <input
-              type="tel"
+            <PhoneInput
+              international
+              defaultCountry="IT"
               value={form.contact_phone}
-              onChange={(e) => update("contact_phone", e.target.value)}
-              className="w-full rounded-lg border border-warm-gray-light bg-white px-4 py-2.5 text-sm text-charcoal placeholder:text-warm-gray focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta"
-              placeholder="+39 ..."
+              onChange={(val) => update("contact_phone", val || "")}
+              className="phone-input-wrapper"
             />
           </div>
         </div>
