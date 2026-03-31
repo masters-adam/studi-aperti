@@ -1,48 +1,51 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function AdminCallbackPage() {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const supabase = createClient();
 
-    // Supabase processes the hash fragment automatically
-    const checkSession = async () => {
-      // Small delay to let Supabase process the token from the URL hash
-      await new Promise((r) => setTimeout(r, 500));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === "SIGNED_IN" && session) {
+          // Verify user is an admin
+          const { data: admin } = await supabase
+            .from("admins")
+            .select("id")
+            .eq("id", session.user.id)
+            .single();
 
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+          if (!admin) {
+            await supabase.auth.signOut();
+            setError("You are not authorized as an admin.");
+            return;
+          }
 
-      if (!session) {
-        setError("Login failed. Please try again.");
-        return;
+          // Full page navigation so middleware picks up the new cookies
+          window.location.href = "/admin";
+        }
       }
+    );
 
-      // Verify user is an admin
-      const { data: admin } = await supabase
-        .from("admins")
-        .select("id")
-        .eq("id", session.user.id)
-        .single();
-
-      if (!admin) {
-        await supabase.auth.signOut();
-        setError("You are not authorized as an admin.");
-        return;
+    // Fallback: if onAuthStateChange doesn't fire (e.g., already signed in)
+    const timeout = setTimeout(async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        window.location.href = "/admin";
+      } else {
+        setError("Login failed or link expired. Please try again.");
       }
+    }, 5000);
 
-      router.push("/admin");
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timeout);
     };
-
-    checkSession();
-  }, [router]);
+  }, []);
 
   if (error) {
     return (
