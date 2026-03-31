@@ -39,7 +39,9 @@ export async function inviteAdmin(
 
   // Invite user via Supabase Auth (service role required)
   const { data: inviteData, error: inviteError } =
-    await serviceClient.auth.admin.inviteUserByEmail(email);
+    await serviceClient.auth.admin.inviteUserByEmail(email, {
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || "https://studi-aperti.vercel.app"}/admin/accept-invite`,
+    });
 
   if (inviteError) {
     // If user already exists, just add them to admins

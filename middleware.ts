@@ -2,10 +2,11 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  // Only protect /admin routes (except /admin/login)
+  // Only protect /admin routes (except login, callback, accept-invite)
+  const publicAdminPaths = ["/admin/login", "/admin/callback", "/admin/accept-invite"];
   const isAdminRoute =
     request.nextUrl.pathname.startsWith("/admin") &&
-    !request.nextUrl.pathname.startsWith("/admin/login");
+    !publicAdminPaths.some((p) => request.nextUrl.pathname.startsWith(p));
 
   let supabaseResponse = NextResponse.next({ request });
 
