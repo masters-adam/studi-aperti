@@ -28,6 +28,19 @@ export function AddressPicker({
   const debounceRef = useRef<NodeJS.Timeout>(undefined);
   const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
+  // Sync when parent address/coords change (e.g., from Google import)
+  useEffect(() => {
+    if (address && address !== query) {
+      setQuery(address);
+    }
+  }, [address]);
+
+  useEffect(() => {
+    if (lat != null && lng != null && mapRef.current) {
+      mapRef.current.flyTo({ center: [lng, lat], zoom: 15, duration: 800 });
+    }
+  }, [lat, lng]);
+
   const geocode = useCallback(
     async (text: string) => {
       if (text.length < 3 || !token) return;

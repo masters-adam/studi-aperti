@@ -1,30 +1,29 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import type { Listing } from "@/lib/types";
 import { ListingsPanel } from "./listings-panel";
 import { MapView } from "./map-view";
 import { TagFilter } from "./tag-filter";
 import { MobileToggle } from "./mobile-toggle";
 import { MobileMapCards } from "./mobile-map-cards";
+import { ListingModal } from "./listing-modal";
 
 export function Homepage({ listings }: { listings: Listing[] }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [mobileView, setMobileView] = useState<"list" | "map">("list");
+  const [modalListing, setModalListing] = useState<Listing | null>(null);
 
-  // Collect all unique tags
   const allTags = useMemo(() => {
     const tags = new Set<string>();
     listings.forEach((l) => l.tags.forEach((t) => tags.add(t)));
     return Array.from(tags).sort();
   }, [listings]);
 
-  // Filter listings by search + tag
   const filtered = useMemo(() => {
     let result = listings;
-
     if (search.trim()) {
       const q = search.toLowerCase();
       result = result.filter(
@@ -34,15 +33,17 @@ export function Homepage({ listings }: { listings: Listing[] }) {
           l.address.toLowerCase().includes(q)
       );
     }
-
     if (selectedTag) {
       result = result.filter((l) => l.tags.includes(selectedTag));
     }
-
     return result;
   }, [listings, search, selectedTag]);
 
   const hasFilters = search.trim() || selectedTag;
+
+  const handleOpenDetail = useCallback((listing: Listing) => {
+    setModalListing(listing);
+  }, []);
 
   return (
     <div className="flex h-[calc(100vh-57px)] flex-col">
@@ -86,7 +87,6 @@ export function Homepage({ listings }: { listings: Listing[] }) {
         )}
       </div>
 
-      {/* Results count when filtering */}
       {hasFilters && (
         <div className="bg-cream-dark/50 px-4 py-1.5 text-xs text-warm-gray flex items-center justify-between">
           <span>
@@ -105,15 +105,16 @@ export function Homepage({ listings }: { listings: Listing[] }) {
       )}
 
       {/* Desktop: side by side */}
-      <div className="hidden flex-1 md:flex">
+      <div className="hidden flex-1 md:flex overflow-hidden">
         <div className="w-[45%] border-r border-cream-dark">
           <ListingsPanel
             listings={filtered}
             selectedId={selectedId}
             onSelectListing={setSelectedId}
+            onOpenDetail={handleOpenDetail}
           />
         </div>
-        <div className="w-[55%]">
+        <div className="w-[55%] sticky top-0 h-full">
           <MapView
             listings={filtered}
             selectedId={selectedId}
@@ -130,6 +131,7 @@ export function Homepage({ listings }: { listings: Listing[] }) {
               listings={filtered}
               selectedId={selectedId}
               onSelectListing={setSelectedId}
+              onOpenDetail={handleOpenDetail}
             />
           </div>
         ) : (
@@ -149,6 +151,14 @@ export function Homepage({ listings }: { listings: Listing[] }) {
       </div>
 
       <MobileToggle view={mobileView} onChangeView={setMobileView} />
+
+      {/* Listing detail modal */}
+      {modalListing && (
+        <ListingModal
+          listing={modalListing}
+          onClose={() => setModalListing(null)}
+        />
+      )}
     </div>
   );
 }

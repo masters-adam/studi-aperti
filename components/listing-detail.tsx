@@ -107,7 +107,7 @@ function DetailCarousel({ images, name }: { images: string[]; name: string }) {
 
 export function ListingDetail({ listing }: { listing: Listing }) {
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8 md:px-8">
+    <div className="mx-auto max-w-6xl px-4 py-8 md:px-8">
       <div className="flex flex-col md:flex-row md:gap-10">
         {/* Left column — info */}
         <div className="flex-1 min-w-0">
@@ -241,6 +241,6 @@ export function ListingDetail({ listing }: { listing: Listing }) {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

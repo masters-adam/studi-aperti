@@ -6,6 +6,7 @@ import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { AddressPicker } from "./address-picker";
 import { ImageUpload } from "./image-upload";
+import { GoogleMapsImport } from "./google-maps-import";
 import { AvailabilityEditor } from "./availability-editor";
 import { TagSelector } from "./tag-selector";
 
@@ -122,6 +123,28 @@ export function ListingForm({
             ))}
           </ul>
         </div>
+      )}
+
+      {/* Google Maps import */}
+      {showEditCode && (
+        <GoogleMapsImport
+          onImport={(data) => {
+            setForm((prev) => ({
+              ...prev,
+              name: data.name || prev.name,
+              description: data.description || prev.description,
+              address: data.address || prev.address,
+              lat: data.lat,
+              lng: data.lng,
+              contact_phone: data.contact_phone || prev.contact_phone,
+              website: data.website || prev.website,
+              images: data.images.length > 0 ? data.images : prev.images,
+              availability: Object.keys(data.availability).length > 0
+                ? data.availability
+                : prev.availability,
+            }));
+          }}
+        />
       )}
 
       {/* Name */}

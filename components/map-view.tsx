@@ -4,10 +4,8 @@ import { useRef, useCallback, useEffect, useState } from "react";
 import Map, { Marker, type MapRef } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import Image from "next/image";
 import type { Listing } from "@/lib/types";
 import { MapPin } from "./map-pin";
-import { TagBadge } from "./tag-badge";
 
 export function MapView({
   listings,
@@ -44,10 +42,11 @@ export function MapView({
     const listing = listings.find((l) => l.id === selectedId);
     if (!listing) return;
 
-    mapRef.current.flyTo({
+    mapRef.current.easeTo({
       center: [listing.lng, listing.lat],
       zoom: Math.max(mapRef.current.getZoom(), 13),
-      duration: 800,
+      duration: 1500,
+      easing: (t) => t * (2 - t), // ease-out quadratic
     });
   }, [selectedId, listings]);
 
@@ -81,8 +80,8 @@ export function MapView({
         onClick={handleMapClick}
       >
         {listings.map((listing) => {
-          const isHovered =
-            hoveredId === listing.id && selectedId !== listing.id;
+          const isHovered = listing.id === hoveredId;
+          const isSelected = listing.id === selectedId;
 
           return (
             <Marker
@@ -95,61 +94,37 @@ export function MapView({
                 setHoveredId(null);
                 onSelectListing(listing.id);
               }}
-              style={{ zIndex: isHovered ? 10 : 1 }}
+              style={{ zIndex: isHovered ? 10 : isSelected ? 5 : 1 }}
             >
               <div
                 onMouseEnter={() => setHoveredId(listing.id)}
                 onMouseLeave={() => setHoveredId(null)}
-                className="relative"
                 style={{ cursor: "pointer" }}
               >
-                {/* Hover card — grows upward from pin */}
-                {isHovered && (
-                  <div
-                    className="absolute bottom-full left-1/2 mb-1 -translate-x-1/2 rounded-xl bg-white shadow-lg border border-cream-dark overflow-hidden animate-[fadeIn_0.15s_ease-out]"
-                    style={{
-                      width: 220,
-                      pointerEvents: "none",
-                    }}
-                  >
-                    {listing.images[0] && (
-                      <div className="relative h-28 w-full">
-                        <Image
-                          src={listing.images[0]}
-                          alt={listing.name}
-                          fill
-                          className="object-cover"
-                          sizes="220px"
-                        />
-                      </div>
-                    )}
-                    <div className="p-2.5">
-                      <h4 className="text-sm font-medium text-charcoal truncate">
-                        {listing.name}
-                      </h4>
-                      {listing.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {listing.tags.slice(0, 2).map((tag) => (
-                            <TagBadge key={tag} name={tag} />
-                          ))}
-                        </div>
-                      )}
+                {isHovered ? (
+                  /* Hover label: name card with pin tail */
+                  <div className="flex flex-col items-center">
+                    <div className="rounded-lg bg-terracotta-dark text-white px-3 py-1.5 shadow-lg max-w-[180px]">
+                      <p className="text-xs font-medium truncate">{listing.name}</p>
                       {listing.description && (
-                        <p className="text-xs text-warm-gray mt-1 line-clamp-2">
-                          {listing.description}
+                        <p className="text-[10px] text-white/70 truncate mt-0.5">
+                          {listing.description.slice(0, 40)}
+                          {listing.description.length > 40 ? "..." : ""}
                         </p>
                       )}
                     </div>
-                    {/* Triangle pointer */}
-                    <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-r border-b border-cream-dark rotate-45" />
+                    <div
+                      className="w-0 h-0"
+                      style={{
+                        borderLeft: "8px solid transparent",
+                        borderRight: "8px solid transparent",
+                        borderTop: "8px solid var(--color-terracotta-dark)",
+                      }}
+                    />
                   </div>
+                ) : (
+                  <MapPin active={isSelected} />
                 )}
-
-                <MapPin
-                  active={
-                    listing.id === selectedId || listing.id === hoveredId
-                  }
-                />
               </div>
             </Marker>
           );
