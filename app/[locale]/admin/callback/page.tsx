@@ -4,12 +4,13 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 function CallbackHandler() {
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const t = useTranslations("AdminCallback");
+  const locale = useLocale();
 
   useEffect(() => {
     const supabase = createClient();
@@ -44,7 +45,7 @@ function CallbackHandler() {
           return;
         }
 
-        window.location.href = "/admin";
+        window.location.href = `/${locale}/admin`;
         return;
       }
 
@@ -53,7 +54,7 @@ function CallbackHandler() {
         data: { subscription },
       } = supabase.auth.onAuthStateChange(async (event, sess) => {
         if (event === "SIGNED_IN" && sess) {
-          window.location.href = "/admin";
+          window.location.href = `/${locale}/admin`;
         }
       });
 
