@@ -12,7 +12,7 @@ export function Header() {
       <div className="flex items-center justify-between px-4 py-2 md:px-6 md:py-3">
         <Link
           href="/"
-          className="text-xl md:text-2xl text-terracotta hover:text-terracotta-dark transition-colors whitespace-nowrap"
+          className="text-xl md:text-2xl font-bold text-terracotta hover:text-terracotta-dark transition-colors whitespace-nowrap"
         >
           {t("title")}
         </Link>

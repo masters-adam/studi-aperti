@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { Link } from "@/i18n/navigation";
+import { useParams } from "next/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { ListingForm, type FormData } from "@/components/listing-form";
 import { ClickableImage } from "@/components/image-lightbox";
