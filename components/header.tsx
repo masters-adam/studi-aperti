@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { LocaleSwitcher } from "./locale-switcher";
@@ -9,12 +10,16 @@ export function Header() {
 
   return (
     <header className="border-b border-cream-dark bg-white/80 backdrop-blur-sm">
-      <div className="flex items-center justify-between px-4 py-2 md:px-6 md:py-3">
-        <Link
-          href="/"
-          className="text-xl md:text-2xl font-bold text-terracotta hover:text-terracotta-dark transition-colors whitespace-nowrap"
-        >
-          {t("title")}
+      <div className="flex items-center justify-between px-4 py-1.5 md:px-6 md:py-2">
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/images/logo.png"
+            alt="Studi Aperti"
+            width={120}
+            height={48}
+            className="h-10 md:h-12 w-auto"
+            priority
+          />
         </Link>
         <nav className="flex items-center gap-2 md:gap-4 text-xs md:text-sm">
           <Link

@@ -110,23 +110,33 @@ export function MapView({
                 style={{ cursor: "pointer" }}
               >
                 {isHovered ? (
-                  /* Hover label: name card with pin tail */
+                  /* Hover label: image + name card with pin tail */
                   <div className="flex flex-col items-center">
-                    <div className="rounded-lg bg-terracotta-dark text-white px-3 py-1.5 shadow-lg max-w-[180px]">
-                      <p className="text-xs font-medium truncate">{getLocalizedName(listing)}</p>
-                      {getLocalizedDescription(listing) && (
-                        <p className="text-[10px] text-white/70 truncate mt-0.5">
-                          {getLocalizedDescription(listing).slice(0, 40)}
-                          {getLocalizedDescription(listing).length > 40 ? "..." : ""}
-                        </p>
+                    <div className="rounded-lg bg-white shadow-lg overflow-hidden w-[200px]">
+                      {listing.images[0] && (
+                        <div className="relative h-24 w-full">
+                          <img
+                            src={listing.images[0]}
+                            alt={getLocalizedName(listing)}
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
                       )}
+                      <div className="px-2.5 py-2">
+                        <p className="text-xs font-medium text-charcoal truncate">{getLocalizedName(listing)}</p>
+                        {listing.tags.length > 0 && (
+                          <p className="text-[10px] text-warm-gray truncate mt-0.5">
+                            {listing.tags.slice(0, 3).join(" · ")}
+                          </p>
+                        )}
+                      </div>
                     </div>
                     <div
                       className="w-0 h-0"
                       style={{
                         borderLeft: "8px solid transparent",
                         borderRight: "8px solid transparent",
-                        borderTop: "8px solid var(--color-terracotta-dark)",
+                        borderTop: "8px solid white",
                       }}
                     />
                   </div>

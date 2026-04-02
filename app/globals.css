@@ -3,9 +3,9 @@
 @theme {
   --color-cream: #FDF6EE;
   --color-cream-dark: #F5EDE3;
-  --color-terracotta: #C75B39;
-  --color-terracotta-dark: #A84B2F;
-  --color-terracotta-light: #E8A690;
+  --color-terracotta: #7A9A6D;
+  --color-terracotta-dark: #5F7D54;
+  --color-terracotta-light: #B5C7A7;
   --color-olive: #6B7F3B;
   --color-olive-dark: #556432;
   --color-olive-light: #A3B574;
@@ -50,6 +50,7 @@ h1, h2, h3, h4, h5, h6 {
   border-color: var(--color-terracotta);
   outline: none;
   box-shadow: 0 0 0 1px var(--color-terracotta);
+
 }
 
 .phone-input-wrapper .PhoneInputCountry {
