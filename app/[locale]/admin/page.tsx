@@ -1,15 +1,17 @@
 import { getPendingListings } from "@/lib/actions/admin";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminPendingPage() {
   const listings = await getPendingListings();
+  const t = await getTranslations("Admin");
 
   return (
     <div>
       <h1 className="text-2xl text-charcoal mb-6">
-        Pending Listings
+        {t("pendingListings")}
         {listings.length > 0 && (
           <span className="ml-2 text-lg text-warm-gray">
             ({listings.length})
@@ -19,7 +21,7 @@ export default async function AdminPendingPage() {
 
       {listings.length === 0 ? (
         <div className="rounded-xl bg-white p-8 text-center shadow-sm">
-          <p className="text-warm-gray">No pending listings to review</p>
+          <p className="text-warm-gray">{t("noPending")}</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -35,7 +37,7 @@ export default async function AdminPendingPage() {
               </div>
               <div className="text-right flex-shrink-0 ml-4">
                 <span className="inline-block rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800">
-                  pending
+                  {t("pending")}
                 </span>
                 <p className="text-xs text-warm-gray mt-1">
                   {new Date(listing.created_at).toLocaleDateString()}

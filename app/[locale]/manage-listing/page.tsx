@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Header } from "@/components/header";
 import { ListingForm, type FormData } from "@/components/listing-form";
 import {
@@ -11,6 +12,7 @@ import {
 import type { Listing } from "@/lib/types";
 
 export default function ManageListingPage() {
+  const t = useTranslations("ManageListing");
   const [step, setStep] = useState<"verify" | "edit" | "done">("verify");
   const [listing, setListing] = useState<Listing | null>(null);
   const [editCode, setEditCode] = useState("");
@@ -33,7 +35,7 @@ export default function ManageListingPage() {
       setEditCode(code);
       setStep("edit");
     } else {
-      setError(result.error ?? "Verification failed");
+      setError(result.error ?? t("verificationFailed"));
     }
   };
 
@@ -59,14 +61,14 @@ export default function ManageListingPage() {
     setLoading(false);
 
     if (result.success) {
-      setMessage("Listing updated successfully!");
+      setMessage(t("updateSuccess"));
     } else {
-      setError(result.error ?? "Failed to update");
+      setError(result.error ?? t("updateFailed"));
     }
   };
 
   const handleRemove = async () => {
-    if (!listing || !confirm("Are you sure you want to remove your listing?"))
+    if (!listing || !confirm(t("removeConfirm")))
       return;
     setLoading(true);
 
@@ -76,7 +78,7 @@ export default function ManageListingPage() {
     if (result.success) {
       setStep("done");
     } else {
-      setError(result.error ?? "Failed to remove listing");
+      setError(result.error ?? t("removeFailed"));
     }
   };
 
@@ -84,13 +86,12 @@ export default function ManageListingPage() {
     <>
       <Header />
       <main className="mx-auto max-w-2xl px-4 py-8">
-        <h1 className="text-3xl text-terracotta mb-2">Manage Your Listing</h1>
+        <h1 className="text-3xl text-terracotta mb-2">{t("title")}</h1>
 
         {step === "verify" && (
           <>
             <p className="text-warm-gray mb-6">
-              Enter your studio name or email and your 4-digit edit code to
-              access your listing.
+              {t("verifyDescription")}
             </p>
             <form
               onSubmit={handleVerify}
@@ -103,7 +104,7 @@ export default function ManageListingPage() {
               )}
               <div>
                 <label className="mb-1 block text-sm font-medium text-charcoal">
-                  Studio Name or Email
+                  {t("nameOrEmail")}
                 </label>
                 <input
                   type="text"
@@ -115,7 +116,7 @@ export default function ManageListingPage() {
               </div>
               <div>
                 <label className="mb-1 block text-sm font-medium text-charcoal">
-                  4-Digit Edit Code
+                  {t("editCode")}
                 </label>
                 <input
                   type="password"
@@ -134,7 +135,7 @@ export default function ManageListingPage() {
                 disabled={loading}
                 className="w-full rounded-lg bg-terracotta px-6 py-3 text-sm font-medium text-white hover:bg-terracotta-dark disabled:opacity-50 transition-colors"
               >
-                {loading ? "Verifying..." : "Access Listing"}
+                {loading ? t("verifying") : t("accessListing")}
               </button>
             </form>
           </>
@@ -143,7 +144,7 @@ export default function ManageListingPage() {
         {step === "edit" && listing && (
           <>
             <p className="text-warm-gray mb-6">
-              Edit your listing below. Changes go live immediately.
+              {t("editDescription")}
             </p>
             {message && (
               <div className="mb-4 rounded-lg bg-olive-light/20 border border-olive-light p-4 text-sm text-olive-dark">
@@ -159,7 +160,7 @@ export default function ManageListingPage() {
               <ListingForm
                 listing={listing}
                 onSubmit={handleUpdate}
-                submitLabel="Save Changes"
+                submitLabel={t("saveChanges")}
                 showEditCode={false}
                 loading={loading}
               />
@@ -169,16 +170,16 @@ export default function ManageListingPage() {
               disabled={loading}
               className="mt-4 w-full rounded-lg border border-red-300 px-6 py-3 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-50 transition-colors"
             >
-              Remove My Listing
+              {t("removeListing")}
             </button>
           </>
         )}
 
         {step === "done" && (
           <div className="rounded-xl bg-white p-8 text-center shadow-sm">
-            <h2 className="text-2xl text-charcoal mb-3">Listing Removed</h2>
+            <h2 className="text-2xl text-charcoal mb-3">{t("removedTitle")}</h2>
             <p className="text-warm-gray">
-              Your listing has been removed from the map.
+              {t("removedMessage")}
             </p>
           </div>
         )}

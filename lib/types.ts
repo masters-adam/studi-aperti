@@ -15,6 +15,11 @@ export type Availability = {
   sunday?: AvailabilityDay;
 };
 
+export type ListingTranslations = {
+  name: { en: string; it: string };
+  description: { en: string; it: string };
+};
+
 export type Listing = {
   id: string;
   name: string;
@@ -28,6 +33,7 @@ export type Listing = {
   availability: Availability;
   tags: string[];
   images: string[];
+  translations: ListingTranslations | null;
   status: ListingStatus;
   created_at: string;
   updated_at: string;

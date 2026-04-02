@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import type { Listing, Availability } from "@/lib/types";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
@@ -65,7 +66,7 @@ function fromListing(listing: Listing): FormData {
 export function ListingForm({
   listing,
   onSubmit,
-  submitLabel = "Submit Listing",
+  submitLabel,
   showEditCode = true,
   loading = false,
 }: {
@@ -75,6 +76,8 @@ export function ListingForm({
   showEditCode?: boolean;
   loading?: boolean;
 }) {
+  const t = useTranslations("ListingForm");
+  const tVal = useTranslations("Validation");
   const [form, setForm] = useState<FormData>(
     listing ? fromListing(listing) : emptyForm()
   );
@@ -86,18 +89,18 @@ export function ListingForm({
 
   const validate = (): string[] => {
     const errs: string[] = [];
-    if (!form.name.trim()) errs.push("Name is required");
-    if (!form.description.trim()) errs.push("Description is required");
+    if (!form.name.trim()) errs.push(tVal("nameRequired"));
+    if (!form.description.trim()) errs.push(tVal("descriptionRequired"));
     if (!form.address.trim() || form.lat == null || form.lng == null)
-      errs.push("Address with map location is required");
-    if (form.images.length === 0) errs.push("At least one image is required");
+      errs.push(tVal("addressRequired"));
+    if (form.images.length === 0) errs.push(tVal("imageRequired"));
     if (!form.contact_email.trim() && !form.contact_phone.trim())
-      errs.push("At least an email or phone number is required");
+      errs.push(tVal("contactRequired"));
     if (showEditCode) {
       if (!/^\d{4}$/.test(form.edit_code))
-        errs.push("Edit code must be exactly 4 digits");
+        errs.push(tVal("editCodeFormat"));
       if (form.edit_code !== form.edit_code_confirm)
-        errs.push("Edit codes do not match");
+        errs.push(tVal("editCodeMismatch"));
     }
     return errs;
   };
@@ -150,28 +153,28 @@ export function ListingForm({
       {/* Name */}
       <div>
         <label className="mb-1 block text-sm font-medium text-charcoal">
-          Studio / Artist Name *
+          {t("studioName")}
         </label>
         <input
           type="text"
           value={form.name}
           onChange={(e) => update("name", e.target.value)}
           className="w-full rounded-lg border border-warm-gray-light bg-white px-4 py-2.5 text-sm text-charcoal placeholder:text-warm-gray focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta"
-          placeholder="e.g., Maria's Ceramics Studio"
+          placeholder={t("studioNamePlaceholder")}
         />
       </div>
 
       {/* Description */}
       <div>
         <label className="mb-1 block text-sm font-medium text-charcoal">
-          Description *
+          {t("descriptionLabel")}
         </label>
         <textarea
           value={form.description}
           onChange={(e) => update("description", e.target.value)}
           rows={4}
           className="w-full rounded-lg border border-warm-gray-light bg-white px-4 py-2.5 text-sm text-charcoal placeholder:text-warm-gray focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta"
-          placeholder="Tell visitors about your studio, your art, and what they can expect..."
+          placeholder={t("descriptionPlaceholder")}
         />
       </div>
 
@@ -207,22 +210,22 @@ export function ListingForm({
       {/* Contact info */}
       <fieldset className="space-y-4">
         <legend className="text-sm font-medium text-charcoal">
-          Contact Information * <span className="text-warm-gray font-normal">(email or phone required)</span>
+          {t("contactInfo")} <span className="text-warm-gray font-normal">{t("contactHint")}</span>
         </legend>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-1 block text-xs text-warm-gray">Email</label>
+            <label className="mb-1 block text-xs text-warm-gray">{t("emailLabel")}</label>
             <input
               type="email"
               value={form.contact_email}
               onChange={(e) => update("contact_email", e.target.value)}
               className="w-full rounded-lg border border-warm-gray-light bg-white px-4 py-2.5 text-sm text-charcoal placeholder:text-warm-gray focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta"
-              placeholder="you@example.com"
+              placeholder={t("emailPlaceholder")}
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs text-warm-gray">Phone</label>
+            <label className="mb-1 block text-xs text-warm-gray">{t("phoneLabel")}</label>
             <PhoneInput
               international
               defaultCountry="IT"
@@ -233,13 +236,13 @@ export function ListingForm({
           </div>
         </div>
         <div>
-          <label className="mb-1 block text-xs text-warm-gray">Website</label>
+          <label className="mb-1 block text-xs text-warm-gray">{t("websiteLabel")}</label>
           <input
             type="url"
             value={form.website}
             onChange={(e) => update("website", e.target.value)}
             className="w-full rounded-lg border border-warm-gray-light bg-white px-4 py-2.5 text-sm text-charcoal placeholder:text-warm-gray focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta"
-            placeholder="https://..."
+            placeholder={t("websitePlaceholder")}
           />
         </div>
       </fieldset>
@@ -248,15 +251,15 @@ export function ListingForm({
       {showEditCode && (
         <fieldset className="space-y-4">
           <legend className="text-sm font-medium text-charcoal">
-            Edit Code *
+            {t("editCodeTitle")}
           </legend>
           <p className="text-xs text-warm-gray">
-            Choose a 4-digit code to edit your listing later. Keep it safe!
+            {t("editCodeDescription")}
           </p>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className="mb-1 block text-xs text-warm-gray">
-                4-Digit Code
+                {t("editCodeLabel")}
               </label>
               <input
                 type="password"
@@ -267,12 +270,12 @@ export function ListingForm({
                   update("edit_code", e.target.value.replace(/\D/g, ""))
                 }
                 className="w-full rounded-lg border border-warm-gray-light bg-white px-4 py-2.5 text-sm text-charcoal focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta"
-                placeholder="e.g., 1234"
+                placeholder={t("editCodePlaceholder")}
               />
             </div>
             <div>
               <label className="mb-1 block text-xs text-warm-gray">
-                Confirm Code
+                {t("confirmCodeLabel")}
               </label>
               <input
                 type="password"
@@ -283,7 +286,7 @@ export function ListingForm({
                   update("edit_code_confirm", e.target.value.replace(/\D/g, ""))
                 }
                 className="w-full rounded-lg border border-warm-gray-light bg-white px-4 py-2.5 text-sm text-charcoal focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta"
-                placeholder="Confirm code"
+                placeholder={t("confirmCodePlaceholder")}
               />
             </div>
           </div>
@@ -295,7 +298,7 @@ export function ListingForm({
         disabled={loading}
         className="w-full rounded-lg bg-terracotta px-6 py-3 text-sm font-medium text-white hover:bg-terracotta-dark disabled:opacity-50 transition-colors"
       >
-        {loading ? "Submitting..." : submitLabel}
+        {loading ? t("submitting") : (submitLabel ?? t("submitListing"))}
       </button>
     </form>
   );

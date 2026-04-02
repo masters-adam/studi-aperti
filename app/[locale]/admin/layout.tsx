@@ -1,11 +1,14 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { signOut } from "@/lib/actions/auth";
+import { getTranslations } from "next-intl/server";
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const t = await getTranslations("Admin");
+
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
@@ -17,7 +20,7 @@ export default function AdminLayout({
           >
             Studi Aperti
           </Link>
-          <p className="text-xs text-warm-gray mt-1">Admin Dashboard</p>
+          <p className="text-xs text-warm-gray mt-1">{t("dashboardTitle")}</p>
         </div>
 
         <nav className="mt-4 space-y-1 px-2">
@@ -25,25 +28,25 @@ export default function AdminLayout({
             href="/admin"
             className="block rounded-lg px-3 py-2 text-sm text-charcoal hover:bg-cream transition-colors"
           >
-            Pending Listings
+            {t("pendingListings")}
           </Link>
           <Link
             href="/admin/listings"
             className="block rounded-lg px-3 py-2 text-sm text-charcoal hover:bg-cream transition-colors"
           >
-            All Listings
+            {t("allListings")}
           </Link>
           <Link
             href="/admin/tags"
             className="block rounded-lg px-3 py-2 text-sm text-charcoal hover:bg-cream transition-colors"
           >
-            Tags
+            {t("tags")}
           </Link>
           <Link
             href="/admin/admins"
             className="block rounded-lg px-3 py-2 text-sm text-charcoal hover:bg-cream transition-colors"
           >
-            Admins
+            {t("admins")}
           </Link>
         </nav>
 
@@ -53,7 +56,7 @@ export default function AdminLayout({
               type="submit"
               className="text-sm text-warm-gray hover:text-terracotta transition-colors"
             >
-              Sign Out
+              {t("signOut")}
             </button>
           </form>
         </div>
@@ -63,24 +66,24 @@ export default function AdminLayout({
       <div className="flex flex-1 flex-col">
         <header className="flex items-center justify-between border-b border-cream-dark bg-white px-4 py-3 md:hidden">
           <Link href="/admin" className="text-lg text-terracotta">
-            Studi Aperti Admin
+            {t("mobileTitle")}
           </Link>
           <nav className="flex items-center gap-3 text-xs">
             <Link href="/admin" className="text-charcoal">
-              Pending
+              {t("pendingListings")}
             </Link>
             <Link href="/admin/listings" className="text-charcoal">
-              Listings
+              {t("allListings")}
             </Link>
             <Link href="/admin/tags" className="text-charcoal">
-              Tags
+              {t("tags")}
             </Link>
             <Link href="/admin/admins" className="text-charcoal">
-              Admins
+              {t("admins")}
             </Link>
             <form action={signOut}>
               <button type="submit" className="text-warm-gray">
-                Out
+                {t("signOutShort")}
               </button>
             </form>
           </nav>

@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import type { Listing } from "@/lib/types";
+import { useLocalizedListing } from "@/lib/use-localized-listing";
 import { TagBadge } from "./tag-badge";
 import { AvailabilitySummary } from "./availability-display";
 import { ImageLightbox } from "./image-lightbox";
@@ -107,10 +109,13 @@ export function ListingCard({
   onOpenDetail: (listing: Listing) => void;
   cardRef?: (el: HTMLDivElement | null) => void;
 }) {
+  const t = useTranslations("ListingCard");
+  const localized = useLocalizedListing(listing);
+
   const description =
-    listing.description.length > 180
-      ? listing.description.slice(0, 180) + "..."
-      : listing.description;
+    localized.description.length > 180
+      ? localized.description.slice(0, 180) + "..."
+      : localized.description;
 
   return (
     <div
@@ -127,12 +132,12 @@ export function ListingCard({
     >
       {/* Hero image carousel */}
       <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-xl">
-        <ImageCarousel images={listing.images} name={listing.name} />
+        <ImageCarousel images={listing.images} name={localized.name} />
       </div>
 
       {/* Info below */}
       <div className="p-4">
-        <h3 className="text-xl leading-tight text-charcoal">{listing.name}</h3>
+        <h3 className="text-xl leading-tight text-charcoal">{localized.name}</h3>
 
         {/* Address */}
         <p className="mt-1 text-sm text-warm-gray flex items-center gap-1.5">
@@ -153,7 +158,7 @@ export function ListingCard({
         )}
 
         {/* Description */}
-        {listing.description && (
+        {localized.description && (
           <p className="mt-3 text-sm text-charcoal/80 leading-relaxed">
             {description}
           </p>
@@ -196,7 +201,7 @@ export function ListingCard({
                 rel="noopener noreferrer"
                 className="text-warm-gray hover:text-terracotta transition-colors"
                 onClick={(e) => e.stopPropagation()}
-                title="Website"
+                title={t("website")}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="12" cy="12" r="10"/>
@@ -211,7 +216,7 @@ export function ListingCard({
               rel="noopener noreferrer"
               className="text-warm-gray hover:text-terracotta transition-colors"
               onClick={(e) => e.stopPropagation()}
-              title="Directions"
+              title={t("directions")}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polygon points="3 11 22 2 13 21 11 13 3 11"/>

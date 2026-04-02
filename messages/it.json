@@ -1,0 +1,230 @@
+{
+  "Metadata": {
+    "title": "Studi Aperti — Artisti e Studi dell'Alta Valle del Tevere",
+    "description": "Scopri artisti e studi aperti nell'Alta Valle del Tevere, Umbria, Italia. Esplora la mappa interattiva e trova ceramica, pittura, scultura e molto altro.",
+    "ogTitle": "Studi Aperti — Artisti e Studi dell'Alta Valle del Tevere",
+    "ogDescription": "Scopri artisti e studi aperti nell'Alta Valle del Tevere, Umbria, Italia."
+  },
+  "Header": {
+    "title": "Studi Aperti",
+    "addListing": "Aggiungi Studio",
+    "manage": "Gestisci"
+  },
+  "LocaleSwitcher": {
+    "switchTo": "EN"
+  },
+  "Hero": {
+    "title": "Scopri l'Arte nell'Alta Valle del Tevere",
+    "subtitle": "Una raccolta curata di studi e artisti nell'Alta Valle del Tevere, Umbria. Esplora ceramica, pittura, scultura e molto altro — direttamente dalla fonte."
+  },
+  "Homepage": {
+    "searchPlaceholder": "Cerca studi...",
+    "studiosFound": "{count, plural, one {# studio} other {# studi}} trovati",
+    "clearFilters": "Rimuovi filtri",
+    "viewing": "Visualizzando {start}–{end} di {total} {total, plural, one {studio} other {studi}}",
+    "noStudios": "Nessuno studio trovato",
+    "all": "Tutti",
+    "showAll": "Mostra Tutti"
+  },
+  "MobileToggle": {
+    "listView": "LISTA",
+    "mapView": "MAPPA"
+  },
+  "ListingCard": {
+    "phone": "Telefono",
+    "email": "Email",
+    "website": "Sito web",
+    "directions": "Indicazioni"
+  },
+  "ListingDetail": {
+    "about": "Informazioni",
+    "hours": "Orari",
+    "email": "Email",
+    "website": "Sito web",
+    "directions": "Indicazioni",
+    "getDirections": "Ottieni indicazioni"
+  },
+  "AddListing": {
+    "title": "Aggiungi il Tuo Studio",
+    "description": "Inserisci il tuo studio o laboratorio sulla mappa di Studi Aperti. Il tuo annuncio sarà revisionato prima di essere pubblicato.",
+    "successTitle": "Annuncio Inviato!",
+    "successMessage": "Il tuo annuncio è stato inviato per la revisione. Un amministratore lo approverà a breve e apparirà sulla mappa.",
+    "successReminder": "Ricorda il tuo codice di modifica a 4 cifre per apportare modifiche in seguito."
+  },
+  "ManageListing": {
+    "title": "Gestisci il Tuo Annuncio",
+    "verifyDescription": "Inserisci il nome del tuo studio o la tua email e il codice di modifica a 4 cifre per accedere al tuo annuncio.",
+    "nameOrEmail": "Nome dello Studio o Email",
+    "editCode": "Codice di Modifica a 4 Cifre",
+    "accessListing": "Accedi all'Annuncio",
+    "verifying": "Verifica in corso...",
+    "editDescription": "Modifica il tuo annuncio qui sotto. Le modifiche saranno pubblicate immediatamente.",
+    "saveChanges": "Salva Modifiche",
+    "removeListing": "Rimuovi il Mio Annuncio",
+    "removeConfirm": "Sei sicuro di voler rimuovere il tuo annuncio?",
+    "removedTitle": "Annuncio Rimosso",
+    "removedMessage": "Il tuo annuncio è stato rimosso dalla mappa.",
+    "updateSuccess": "Annuncio aggiornato con successo!",
+    "updateFailed": "Aggiornamento fallito",
+    "removeFailed": "Rimozione dell'annuncio fallita"
+  },
+  "ListingForm": {
+    "studioName": "Nome dello Studio / Artista *",
+    "studioNamePlaceholder": "es., Studio di Ceramica di Maria",
+    "descriptionLabel": "Descrizione *",
+    "descriptionPlaceholder": "Racconta ai visitatori del tuo studio, della tua arte e di cosa possono aspettarsi...",
+    "contactInfo": "Informazioni di Contatto *",
+    "contactHint": "(email o telefono richiesto)",
+    "emailLabel": "Email",
+    "phoneLabel": "Telefono",
+    "websiteLabel": "Sito web",
+    "emailPlaceholder": "tu@esempio.com",
+    "websitePlaceholder": "https://...",
+    "editCodeTitle": "Codice di Modifica *",
+    "editCodeDescription": "Scegli un codice a 4 cifre per modificare il tuo annuncio in seguito. Conservalo con cura!",
+    "editCodeLabel": "Codice a 4 Cifre",
+    "confirmCodeLabel": "Conferma Codice",
+    "editCodePlaceholder": "es., 1234",
+    "confirmCodePlaceholder": "Conferma codice",
+    "submitListing": "Invia Annuncio",
+    "submitting": "Invio in corso..."
+  },
+  "Validation": {
+    "nameRequired": "Il nome è obbligatorio",
+    "descriptionRequired": "La descrizione è obbligatoria",
+    "addressRequired": "L'indirizzo con posizione sulla mappa è obbligatorio",
+    "imageRequired": "È richiesta almeno un'immagine",
+    "contactRequired": "È richiesta almeno un'email o un numero di telefono",
+    "editCodeFormat": "Il codice di modifica deve essere esattamente di 4 cifre",
+    "editCodeMismatch": "I codici di modifica non corrispondono"
+  },
+  "Images": {
+    "label": "Immagini *",
+    "limit": "(massimo {max})",
+    "maxAllowed": "Massimo {max} immagini consentite",
+    "clickOrDrag": "Clicca o trascina per caricare",
+    "uploading": "Caricamento..."
+  },
+  "Availability": {
+    "label": "Disponibilità",
+    "open": "Aperto",
+    "closed": "Chiuso",
+    "hours": "Orari",
+    "text": "Testo",
+    "textPlaceholder": "es., Su appuntamento",
+    "openToday": "Aperto oggi: {hours}",
+    "opensDay": "Apre {day}",
+    "opensAt": "alle {time}",
+    "openNow": "Aperto · {hours}"
+  },
+  "Days": {
+    "monday": "Lunedì",
+    "tuesday": "Martedì",
+    "wednesday": "Mercoledì",
+    "thursday": "Giovedì",
+    "friday": "Venerdì",
+    "saturday": "Sabato",
+    "sunday": "Domenica",
+    "mondayShort": "Lun",
+    "tuesdayShort": "Mar",
+    "wednesdayShort": "Mer",
+    "thursdayShort": "Gio",
+    "fridayShort": "Ven",
+    "saturdayShort": "Sab",
+    "sundayShort": "Dom"
+  },
+  "AdminLogin": {
+    "title": "Studi Aperti",
+    "subtitle": "Accesso Admin",
+    "checkEmail": "Controlla la tua email",
+    "magicLinkSent": "Abbiamo inviato un link magico a <strong>{email}</strong>. Clicca il link nella tua email per accedere.",
+    "tryDifferent": "Prova un'altra email",
+    "emailLabel": "Email",
+    "emailPlaceholder": "tua@email.com",
+    "sendMagicLink": "Invia Link Magico",
+    "sending": "Invio...",
+    "onlyAuthorized": "Solo gli amministratori autorizzati possono accedere."
+  },
+  "Admin": {
+    "mobileTitle": "Studi Aperti Admin",
+    "dashboardTitle": "Pannello Admin",
+    "pendingListings": "Annunci in Attesa",
+    "allListings": "Tutti gli Annunci",
+    "tags": "Tag",
+    "admins": "Amministratori",
+    "signOut": "Esci",
+    "signOutShort": "Esci",
+    "noPending": "Nessun annuncio in attesa di revisione",
+    "pending": "in attesa"
+  },
+  "AdminListings": {
+    "title": "Tutti gli Annunci",
+    "all": "tutti",
+    "approved": "approvati",
+    "pending": "in attesa",
+    "rejected": "rifiutati",
+    "removed": "rimossi",
+    "nameHeader": "Nome",
+    "statusHeader": "Stato",
+    "createdHeader": "Creato",
+    "actionsHeader": "Azioni",
+    "noListings": "Nessun annuncio trovato",
+    "edit": "Modifica",
+    "remove": "Rimuovi",
+    "restore": "Ripristina",
+    "back": "Indietro",
+    "notFound": "Annuncio non trovato",
+    "loading": "Caricamento...",
+    "approve": "Approva",
+    "reject": "Rifiuta",
+    "saving": "...",
+    "rejectConfirm": "Rifiutare questo annuncio?",
+    "editListing": "Modifica Annuncio",
+    "removeConfirm": "Rimuovere questo annuncio?",
+    "backToPreview": "Torna all'anteprima",
+    "editing": "Modifica",
+    "noContact": "Nessuna informazione di contatto fornita",
+    "submitted": "Inviato {date}",
+    "address": "Indirizzo",
+    "availability": "Disponibilità",
+    "contact": "Contatto",
+    "updateSuccess": "Annuncio aggiornato con successo!"
+  },
+  "AdminTags": {
+    "title": "Gestione Tag",
+    "placeholder": "Nome nuovo tag...",
+    "addTag": "Aggiungi Tag",
+    "noTags": "Nessun tag ancora",
+    "loading": "Caricamento...",
+    "delete": "Elimina",
+    "deleteConfirm": "Eliminare il tag \"{name}\"?"
+  },
+  "AdminAdmins": {
+    "title": "Gestione Amministratori",
+    "placeholder": "Indirizzo email...",
+    "invite": "Invita",
+    "loading": "Caricamento...",
+    "inviteSuccess": "{email} invitato come amministratore",
+    "removeConfirm": "Rimuovere {email} come amministratore?",
+    "added": "Aggiunto {date}",
+    "you": "(tu)",
+    "remove": "Rimuovi"
+  },
+  "AdminCallback": {
+    "signingIn": "Accesso in corso...",
+    "loading": "Caricamento...",
+    "backToLogin": "Torna al login",
+    "notAuthorized": "Non sei autorizzato come amministratore.",
+    "loginFailed": "Accesso fallito: {message}",
+    "linkExpired": "Accesso fallito o link scaduto. Riprova."
+  },
+  "AdminAcceptInvite": {
+    "settingUp": "Configurazione del tuo account...",
+    "redirecting": "Sarai reindirizzato al pannello admin.",
+    "invalidLink": "Link di invito non valido o scaduto. Richiedi un nuovo invito.",
+    "goToLogin": "Vai al login"
+  },
+  "Common": {
+    "somethingWrong": "Qualcosa è andato storto"
+  }
+}

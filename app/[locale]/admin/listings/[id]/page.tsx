@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { ListingForm, type FormData } from "@/components/listing-form";
 import { ClickableImage } from "@/components/image-lightbox";
 import {
@@ -20,6 +21,7 @@ import type { Listing } from "@/lib/types";
 export default function AdminListingDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const t = useTranslations("AdminListings");
   const [listing, setListing] = useState<Listing | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -42,7 +44,7 @@ export default function AdminListingDetailPage() {
   };
 
   const handleReject = async () => {
-    if (!listing || !confirm("Reject this listing?")) return;
+    if (!listing || !confirm(t("rejectConfirm"))) return;
     setSaving(true);
     await rejectListing(listing.id);
     setSaving(false);
@@ -69,7 +71,7 @@ export default function AdminListingDetailPage() {
     } as Partial<Listing>);
 
     setSaving(false);
-    setMessage("Listing updated successfully!");
+    setMessage(t("updateSuccess"));
     // Refresh listing data
     const updated = await getListingById(listing.id);
     if (updated) setListing(updated);
@@ -77,7 +79,7 @@ export default function AdminListingDetailPage() {
   };
 
   const handleRemove = async () => {
-    if (!listing || !confirm("Remove this listing?")) return;
+    if (!listing || !confirm(t("removeConfirm"))) return;
     await adminRemoveListing(listing.id);
     router.push("/admin/listings");
   };
@@ -91,7 +93,7 @@ export default function AdminListingDetailPage() {
   if (loading) {
     return (
       <div className="flex h-48 items-center justify-center text-warm-gray">
-        Loading...
+        {t("loading")}
       </div>
     );
   }
@@ -99,7 +101,7 @@ export default function AdminListingDetailPage() {
   if (!listing) {
     return (
       <div className="rounded-xl bg-white p-8 text-center shadow-sm">
-        <p className="text-warm-gray">Listing not found</p>
+        <p className="text-warm-gray">{t("notFound")}</p>
       </div>
     );
   }
@@ -119,7 +121,7 @@ export default function AdminListingDetailPage() {
           href={listing.status === "pending" ? "/admin" : "/admin/listings"}
           className="text-sm text-warm-gray hover:text-terracotta"
         >
-          &larr; Back
+          &larr; {t("back")}
         </Link>
         <h1 className="text-2xl text-charcoal">{listing.name}</h1>
         <span
@@ -185,7 +187,7 @@ export default function AdminListingDetailPage() {
 
               {/* Address */}
               <div className="text-sm">
-                <h4 className="font-medium text-charcoal mb-1">Address</h4>
+                <h4 className="font-medium text-charcoal mb-1">{t("address")}</h4>
                 <p className="text-warm-gray">{listing.address}</p>
                 <p className="text-xs text-warm-gray mt-0.5">
                   {listing.lat.toFixed(5)}, {listing.lng.toFixed(5)}
@@ -194,13 +196,13 @@ export default function AdminListingDetailPage() {
 
               {/* Availability */}
               <div>
-                <h4 className="text-sm font-medium text-charcoal mb-2">Availability</h4>
+                <h4 className="text-sm font-medium text-charcoal mb-2">{t("availability")}</h4>
                 <AvailabilityFull availability={listing.availability} />
               </div>
 
               {/* Contact */}
               <div className="text-sm">
-                <h4 className="font-medium text-charcoal mb-1">Contact</h4>
+                <h4 className="font-medium text-charcoal mb-1">{t("contact")}</h4>
                 <div className="space-y-0.5 text-warm-gray">
                   {listing.contact_email && <p>{listing.contact_email}</p>}
                   {listing.contact_phone && <p>{listing.contact_phone}</p>}
@@ -217,13 +219,13 @@ export default function AdminListingDetailPage() {
                     </p>
                   )}
                   {!listing.contact_email && !listing.contact_phone && !listing.website && (
-                    <p className="italic">No contact info provided</p>
+                    <p className="italic">{t("noContact")}</p>
                   )}
                 </div>
               </div>
 
               <p className="text-xs text-warm-gray pt-2 border-t border-cream-dark">
-                Submitted {new Date(listing.created_at).toLocaleDateString()}
+                {t("submitted", { date: new Date(listing.created_at).toLocaleDateString() })}
               </p>
             </div>
           </div>
@@ -237,14 +239,14 @@ export default function AdminListingDetailPage() {
                   disabled={saving}
                   className="rounded-lg bg-olive px-5 py-2.5 text-sm font-medium text-white hover:bg-olive-dark disabled:opacity-50 transition-colors"
                 >
-                  {saving ? "..." : "Approve"}
+                  {saving ? t("saving") : t("approve")}
                 </button>
                 <button
                   onClick={handleReject}
                   disabled={saving}
                   className="rounded-lg border border-red-300 px-5 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-50 transition-colors"
                 >
-                  Reject
+                  {t("reject")}
                 </button>
               </>
             )}
@@ -252,14 +254,14 @@ export default function AdminListingDetailPage() {
               onClick={() => setMode("edit")}
               className="rounded-lg bg-terracotta px-5 py-2.5 text-sm font-medium text-white hover:bg-terracotta-dark transition-colors"
             >
-              Edit Listing
+              {t("editListing")}
             </button>
             {listing.status === "approved" && (
               <button
                 onClick={handleRemove}
                 className="rounded-lg border border-red-300 px-5 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
               >
-                Remove
+                {t("remove")}
               </button>
             )}
             {listing.status === "removed" && (
@@ -267,7 +269,7 @@ export default function AdminListingDetailPage() {
                 onClick={handleRestore}
                 className="rounded-lg bg-olive px-5 py-2.5 text-sm font-medium text-white hover:bg-olive-dark transition-colors"
               >
-                Restore
+                {t("restore")}
               </button>
             )}
           </div>
@@ -280,9 +282,9 @@ export default function AdminListingDetailPage() {
               onClick={() => setMode("preview")}
               className="text-sm text-warm-gray hover:text-terracotta"
             >
-              &larr; Back to preview
+              &larr; {t("backToPreview")}
             </button>
-            <h2 className="text-lg text-charcoal">Editing</h2>
+            <h2 className="text-lg text-charcoal">{t("editing")}</h2>
           </div>
           <div className="rounded-xl bg-white p-6 shadow-sm">
             <ListingForm

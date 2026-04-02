@@ -2,11 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { useTranslations } from "next-intl";
 
 export default function AcceptInvitePage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+  const t = useTranslations("AdminAcceptInvite");
 
   useEffect(() => {
     const supabase = createClient();
@@ -24,7 +27,7 @@ export default function AcceptInvitePage() {
         await new Promise((r) => setTimeout(r, 1500));
         const { data: { session: retry } } = await supabase.auth.getSession();
         if (!retry) {
-          setError("Invalid or expired invite link. Please request a new invite.");
+          setError(t("invalidLink"));
           return;
         }
       }
@@ -34,16 +37,16 @@ export default function AcceptInvitePage() {
     };
 
     processInvite();
-  }, [router]);
+  }, [router, t]);
 
   if (error) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-cream px-4">
         <div className="rounded-xl bg-white p-6 shadow-sm text-center max-w-sm">
           <p className="text-red-600 mb-4">{error}</p>
-          <a href="/admin/login" className="text-sm text-terracotta hover:underline">
-            Go to login
-          </a>
+          <Link href="/admin/login" className="text-sm text-terracotta hover:underline">
+            {t("goToLogin")}
+          </Link>
         </div>
       </div>
     );
@@ -52,8 +55,8 @@ export default function AcceptInvitePage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-cream">
       <div className="text-center">
-        <p className="text-warm-gray mb-2">Setting up your account...</p>
-        <p className="text-xs text-warm-gray">You&apos;ll be redirected to the admin dashboard.</p>
+        <p className="text-warm-gray mb-2">{t("settingUp")}</p>
+        <p className="text-xs text-warm-gray">{t("redirecting")}</p>
       </div>
     </div>
   );

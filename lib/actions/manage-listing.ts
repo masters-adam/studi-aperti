@@ -3,6 +3,7 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import bcrypt from "bcryptjs";
 import type { Listing } from "@/lib/types";
+import { translateListing } from "@/lib/translate";
 
 export async function verifyEditCode(
   nameOrEmail: string,
@@ -59,7 +60,17 @@ export async function updateListing(
 
   // Don't allow changing status or edit_code through this endpoint
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { status, edit_code, id: listingId, ...safeData } = data as Record<string, unknown>;
+  const { status, edit_code, id: listingId, translations, ...safeData } = data as Record<string, unknown>;
+
+  // Re-translate if name or description changed
+  if (safeData.name || safeData.description) {
+    const name = (safeData.name as string) || "";
+    const description = (safeData.description as string) || "";
+    if (name && description) {
+      const newTranslations = await translateListing(name, description);
+      (safeData as Record<string, unknown>).translations = newTranslations;
+    }
+  }
 
   const { error } = await supabase
     .from("listings")

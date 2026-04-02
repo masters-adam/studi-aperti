@@ -1,15 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Header } from "@/components/header";
 import { ListingForm, type FormData } from "@/components/listing-form";
 import { submitListing } from "@/lib/actions/submit-listing";
 
 export default function AddListingPage() {
+  const t = useTranslations("AddListing");
+  const tCommon = useTranslations("Common");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const handleSubmit = async (data: FormData) => {
     if (data.lat == null || data.lng == null) return;
 
@@ -36,7 +38,7 @@ export default function AddListingPage() {
     if (result.success) {
       setSubmitted(true);
     } else {
-      setError(result.error ?? "Something went wrong");
+      setError(result.error ?? tCommon("somethingWrong"));
     }
   };
 
@@ -48,22 +50,20 @@ export default function AddListingPage() {
           <div className="rounded-xl bg-white p-8 text-center shadow-sm">
             <div className="mb-4 text-4xl">✨</div>
             <h1 className="text-3xl text-terracotta mb-3">
-              Listing Submitted!
+              {t("successTitle")}
             </h1>
             <p className="text-warm-gray">
-              Your listing has been submitted for review. An admin will approve
-              it shortly, and it will then appear on the map.
+              {t("successMessage")}
             </p>
             <p className="mt-4 text-sm text-warm-gray">
-              Remember your 4-digit edit code to make changes later.
+              {t("successReminder")}
             </p>
           </div>
         ) : (
           <>
-            <h1 className="text-3xl text-terracotta mb-2">Add Your Studio</h1>
+            <h1 className="text-3xl text-terracotta mb-2">{t("title")}</h1>
             <p className="text-warm-gray mb-6">
-              List your studio or workshop on the Studi Aperti map. Your
-              listing will be reviewed before going live.
+              {t("description")}
             </p>
             {error && (
               <div className="mb-4 rounded-lg bg-red-50 border border-red-200 p-4 text-sm text-red-700">

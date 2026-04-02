@@ -3,6 +3,7 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import bcrypt from "bcryptjs";
 import { sendNewListingNotification } from "@/lib/email";
+import { translateListing } from "@/lib/translate";
 
 type SubmitData = {
   name: string;
@@ -24,7 +25,10 @@ export async function submitListing(
 ): Promise<{ success: boolean; error?: string }> {
   const supabase = await createServiceClient();
 
-  const hashedCode = await bcrypt.hash(data.edit_code, 10);
+  const [hashedCode, translations] = await Promise.all([
+    bcrypt.hash(data.edit_code, 10),
+    translateListing(data.name, data.description),
+  ]);
 
   const { error } = await supabase.from("listings").insert({
     name: data.name,
@@ -39,6 +43,7 @@ export async function submitListing(
     tags: data.tags,
     images: data.images,
     edit_code: hashedCode,
+    translations,
     status: "pending",
   });
 

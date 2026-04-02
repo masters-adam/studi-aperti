@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { useTranslations } from "next-intl";
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const t = useTranslations("AdminLogin");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,22 +38,25 @@ export default function AdminLoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-cream px-4">
       <div className="w-full max-w-sm">
         <h1 className="text-center text-3xl text-terracotta mb-2">
-          Studi Aperti
+          {t("title")}
         </h1>
-        <p className="text-center text-warm-gray mb-8">Admin Login</p>
+        <p className="text-center text-warm-gray mb-8">{t("subtitle")}</p>
 
         {sent ? (
           <div className="rounded-xl bg-white p-6 shadow-sm text-center">
             <div className="text-3xl mb-3">&#9993;</div>
-            <h2 className="text-lg text-charcoal mb-2">Check your email</h2>
+            <h2 className="text-lg text-charcoal mb-2">{t("checkEmail")}</h2>
             <p className="text-sm text-warm-gray">
-              We sent a magic link to <strong>{email}</strong>. Click the link in your email to sign in.
+              {t.rich("magicLinkSent", {
+                email,
+                strong: (chunks) => <strong>{chunks}</strong>,
+              })}
             </p>
             <button
               onClick={() => setSent(false)}
               className="mt-4 text-sm text-terracotta hover:underline"
             >
-              Try a different email
+              {t("tryDifferent")}
             </button>
           </div>
         ) : (
@@ -67,14 +72,14 @@ export default function AdminLoginPage() {
 
             <div>
               <label className="mb-1 block text-sm font-medium text-charcoal">
-                Email
+                {t("emailLabel")}
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full rounded-lg border border-warm-gray-light bg-white px-4 py-2.5 text-sm text-charcoal focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta"
-                placeholder="your@email.com"
+                placeholder={t("emailPlaceholder")}
                 required
               />
             </div>
@@ -84,11 +89,11 @@ export default function AdminLoginPage() {
               disabled={loading}
               className="w-full rounded-lg bg-terracotta px-6 py-3 text-sm font-medium text-white hover:bg-terracotta-dark disabled:opacity-50 transition-colors"
             >
-              {loading ? "Sending..." : "Send Magic Link"}
+              {loading ? t("sending") : t("sendMagicLink")}
             </button>
 
             <p className="text-xs text-warm-gray text-center">
-              Only authorized admins can sign in.
+              {t("onlyAuthorized")}
             </p>
           </form>
         )}

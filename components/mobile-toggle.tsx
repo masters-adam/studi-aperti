@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 export function MobileToggle({
   view,
   onChangeView,
@@ -7,6 +9,8 @@ export function MobileToggle({
   view: "list" | "map";
   onChangeView: (view: "list" | "map") => void;
 }) {
+  const t = useTranslations("MobileToggle");
+
   return (
     <div className="fixed bottom-0 left-0 right-0 z-20 border-t border-cream-dark bg-white md:hidden">
       <div className="flex">
@@ -33,7 +37,7 @@ export function MobileToggle({
             <line x1="3" y1="12" x2="3.01" y2="12" />
             <line x1="3" y1="18" x2="3.01" y2="18" />
           </svg>
-          LIST VIEW
+          {t("listView")}
         </button>
         <button
           onClick={() => onChangeView("map")}
@@ -55,7 +59,7 @@ export function MobileToggle({
             <line x1="8" y1="2" x2="8" y2="18" />
             <line x1="16" y1="6" x2="16" y2="22" />
           </svg>
-          MAP VIEW
+          {t("mapView")}
         </button>
       </div>
     </div>

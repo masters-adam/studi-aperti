@@ -2,11 +2,14 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { useTranslations } from "next-intl";
 
 function CallbackHandler() {
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
+  const t = useTranslations("AdminCallback");
 
   useEffect(() => {
     const supabase = createClient();
@@ -18,7 +21,7 @@ function CallbackHandler() {
         const { error: exchangeError } =
           await supabase.auth.exchangeCodeForSession(code);
         if (exchangeError) {
-          setError("Login failed: " + exchangeError.message);
+          setError(t("loginFailed", { message: exchangeError.message }));
           return;
         }
       }
@@ -37,7 +40,7 @@ function CallbackHandler() {
 
         if (!admin) {
           await supabase.auth.signOut();
-          setError("You are not authorized as an admin.");
+          setError(t("notAuthorized"));
           return;
         }
 
@@ -56,31 +59,33 @@ function CallbackHandler() {
 
       setTimeout(() => {
         subscription.unsubscribe();
-        setError("Login failed or link expired. Please try again.");
+        setError(t("linkExpired"));
       }, 5000);
     };
 
     processAuth();
-  }, [searchParams]);
+  }, [searchParams, t]);
 
   if (error) {
     return (
       <div className="rounded-xl bg-white p-6 shadow-sm text-center max-w-sm">
         <p className="text-red-600 mb-4">{error}</p>
-        <a href="/admin/login" className="text-sm text-terracotta hover:underline">
-          Back to login
-        </a>
+        <Link href="/admin/login" className="text-sm text-terracotta hover:underline">
+          {t("backToLogin")}
+        </Link>
       </div>
     );
   }
 
-  return <p className="text-warm-gray">Signing you in...</p>;
+  return <p className="text-warm-gray">{t("signingIn")}</p>;
 }
 
 export default function AdminCallbackPage() {
+  const t = useTranslations("AdminCallback");
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-cream px-4">
-      <Suspense fallback={<p className="text-warm-gray">Loading...</p>}>
+      <Suspense fallback={<p className="text-warm-gray">{t("loading")}</p>}>
         <CallbackHandler />
       </Suspense>
     </div>

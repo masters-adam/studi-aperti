@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 
@@ -40,12 +41,13 @@ export function ImageUpload({
   images: string[];
   onChange: (urls: string[]) => void;
 }) {
+  const t = useTranslations("Images");
   const [uploading, setUploading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = async (files: FileList) => {
     if (images.length + files.length > MAX_IMAGES) {
-      alert(`Maximum ${MAX_IMAGES} images allowed`);
+      alert(t("maxAllowed", { max: MAX_IMAGES }));
       return;
     }
 
@@ -82,7 +84,7 @@ export function ImageUpload({
   return (
     <div className="space-y-2">
       <label className="mb-1 block text-sm font-medium text-charcoal">
-        Images * <span className="text-warm-gray font-normal">(up to {MAX_IMAGES})</span>
+        {t("label")} <span className="text-warm-gray font-normal">{t("limit", { max: MAX_IMAGES })}</span>
       </label>
 
       {/* Preview grid */}
@@ -123,7 +125,7 @@ export function ImageUpload({
           className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-warm-gray-light py-8 text-sm text-warm-gray hover:border-terracotta hover:text-terracotta transition-colors"
         >
           {uploading ? (
-            <span>Uploading...</span>
+            <span>{t("uploading")}</span>
           ) : (
             <>
               <svg
@@ -139,7 +141,7 @@ export function ImageUpload({
                 <polyline points="17 8 12 3 7 8" />
                 <line x1="12" y1="3" x2="12" y2="15" />
               </svg>
-              <span>Click or drag to upload</span>
+              <span>{t("clickOrDrag")}</span>
             </>
           )}
         </div>

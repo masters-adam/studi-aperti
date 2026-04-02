@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { getAllTags, createTag, toggleTag, deleteTag } from "@/lib/actions/tags";
+import { useTranslations } from "next-intl";
 import type { Tag } from "@/lib/types";
 
 export default function AdminTagsPage() {
@@ -9,6 +10,7 @@ export default function AdminTagsPage() {
   const [newTagName, setNewTagName] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const t = useTranslations("AdminTags");
 
   const refresh = async () => {
     const data = await getAllTags();
@@ -40,7 +42,7 @@ export default function AdminTagsPage() {
   };
 
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Delete tag "${name}"?`)) return;
+    if (!confirm(t("deleteConfirm", { name }))) return;
     setMessage(null);
     const result = await deleteTag(id);
     if (result.error) setMessage(result.error);
@@ -49,7 +51,7 @@ export default function AdminTagsPage() {
 
   return (
     <div className="max-w-lg">
-      <h1 className="text-2xl text-charcoal mb-6">Tag Management</h1>
+      <h1 className="text-2xl text-charcoal mb-6">{t("title")}</h1>
 
       {/* Add tag form */}
       <form onSubmit={handleCreate} className="flex gap-2 mb-6">
@@ -57,14 +59,14 @@ export default function AdminTagsPage() {
           type="text"
           value={newTagName}
           onChange={(e) => setNewTagName(e.target.value)}
-          placeholder="New tag name..."
+          placeholder={t("placeholder")}
           className="flex-1 rounded-lg border border-warm-gray-light bg-white px-4 py-2.5 text-sm text-charcoal focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta"
         />
         <button
           type="submit"
           className="rounded-lg bg-terracotta px-4 py-2.5 text-sm font-medium text-white hover:bg-terracotta-dark transition-colors"
         >
-          Add Tag
+          {t("addTag")}
         </button>
       </form>
 
@@ -76,10 +78,10 @@ export default function AdminTagsPage() {
 
       {/* Tags list */}
       {loading ? (
-        <p className="text-warm-gray">Loading...</p>
+        <p className="text-warm-gray">{t("loading")}</p>
       ) : tags.length === 0 ? (
         <div className="rounded-xl bg-white p-8 text-center shadow-sm">
-          <p className="text-warm-gray">No tags yet</p>
+          <p className="text-warm-gray">{t("noTags")}</p>
         </div>
       ) : (
         <div className="rounded-xl bg-white shadow-sm divide-y divide-cream-dark">
@@ -108,7 +110,7 @@ export default function AdminTagsPage() {
                   onClick={() => handleDelete(tag.id, tag.name)}
                   className="text-xs text-red-500 hover:text-red-700"
                 >
-                  Delete
+                  {t("delete")}
                 </button>
               </div>
             </div>

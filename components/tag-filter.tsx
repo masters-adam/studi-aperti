@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { TagBadge } from "./tag-badge";
 
 export function TagFilter({
@@ -11,12 +12,14 @@ export function TagFilter({
   selectedTag: string | null;
   onSelectTag: (tag: string | null) => void;
 }) {
+  const t = useTranslations("Homepage");
+
   if (tags.length === 0) return null;
 
   return (
     <div className="flex flex-wrap gap-2">
       <TagBadge
-        name="All"
+        name={t("all")}
         active={selectedTag === null}
         onClick={() => onSelectTag(null)}
       />

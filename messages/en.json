@@ -1,0 +1,230 @@
+{
+  "Metadata": {
+    "title": "Studi Aperti — Artists & Studios of Upper Tiber Valley",
+    "description": "Discover artists and open studios in the Upper Tiber Valley, Umbria, Italy. Browse the interactive map and find local ceramics, painting, sculpture, and more.",
+    "ogTitle": "Studi Aperti — Artists & Studios of Upper Tiber Valley",
+    "ogDescription": "Discover artists and open studios in the Upper Tiber Valley, Umbria, Italy."
+  },
+  "Header": {
+    "title": "Studi Aperti",
+    "addListing": "Add Listing",
+    "manage": "Manage"
+  },
+  "LocaleSwitcher": {
+    "switchTo": "IT"
+  },
+  "Hero": {
+    "title": "Discover Art in the Upper Tiber Valley",
+    "subtitle": "A curated collection of studios and artists in Umbria's Upper Tiber Valley. Explore ceramics, painting, sculpture, and more — right from the source."
+  },
+  "Homepage": {
+    "searchPlaceholder": "Search studios...",
+    "studiosFound": "{count, plural, one {# studio} other {# studios}} found",
+    "clearFilters": "Clear filters",
+    "viewing": "Viewing {start}–{end} of {total} {total, plural, one {studio} other {studios}}",
+    "noStudios": "No studios found",
+    "all": "All",
+    "showAll": "Show All"
+  },
+  "MobileToggle": {
+    "listView": "LIST VIEW",
+    "mapView": "MAP VIEW"
+  },
+  "ListingCard": {
+    "phone": "Phone",
+    "email": "Email",
+    "website": "Website",
+    "directions": "Directions"
+  },
+  "ListingDetail": {
+    "about": "About",
+    "hours": "Hours",
+    "email": "Email",
+    "website": "Website",
+    "directions": "Directions",
+    "getDirections": "Get Directions"
+  },
+  "AddListing": {
+    "title": "Add Your Studio",
+    "description": "List your studio or workshop on the Studi Aperti map. Your listing will be reviewed before going live.",
+    "successTitle": "Listing Submitted!",
+    "successMessage": "Your listing has been submitted for review. An admin will approve it shortly, and it will then appear on the map.",
+    "successReminder": "Remember your 4-digit edit code to make changes later."
+  },
+  "ManageListing": {
+    "title": "Manage Your Listing",
+    "verifyDescription": "Enter your studio name or email and your 4-digit edit code to access your listing.",
+    "nameOrEmail": "Studio Name or Email",
+    "editCode": "4-Digit Edit Code",
+    "accessListing": "Access Listing",
+    "verifying": "Verifying...",
+    "editDescription": "Edit your listing below. Changes go live immediately.",
+    "saveChanges": "Save Changes",
+    "removeListing": "Remove My Listing",
+    "removeConfirm": "Are you sure you want to remove your listing?",
+    "removedTitle": "Listing Removed",
+    "removedMessage": "Your listing has been removed from the map.",
+    "updateSuccess": "Listing updated successfully!",
+    "updateFailed": "Failed to update",
+    "removeFailed": "Failed to remove listing"
+  },
+  "ListingForm": {
+    "studioName": "Studio / Artist Name *",
+    "studioNamePlaceholder": "e.g., Maria's Ceramics Studio",
+    "descriptionLabel": "Description *",
+    "descriptionPlaceholder": "Tell visitors about your studio, your art, and what they can expect...",
+    "contactInfo": "Contact Information *",
+    "contactHint": "(email or phone required)",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone",
+    "websiteLabel": "Website",
+    "emailPlaceholder": "you@example.com",
+    "websitePlaceholder": "https://...",
+    "editCodeTitle": "Edit Code *",
+    "editCodeDescription": "Choose a 4-digit code to edit your listing later. Keep it safe!",
+    "editCodeLabel": "4-Digit Code",
+    "confirmCodeLabel": "Confirm Code",
+    "editCodePlaceholder": "e.g., 1234",
+    "confirmCodePlaceholder": "Confirm code",
+    "submitListing": "Submit Listing",
+    "submitting": "Submitting..."
+  },
+  "Validation": {
+    "nameRequired": "Name is required",
+    "descriptionRequired": "Description is required",
+    "addressRequired": "Address with map location is required",
+    "imageRequired": "At least one image is required",
+    "contactRequired": "At least an email or phone number is required",
+    "editCodeFormat": "Edit code must be exactly 4 digits",
+    "editCodeMismatch": "Edit codes do not match"
+  },
+  "Images": {
+    "label": "Images *",
+    "limit": "(up to {max})",
+    "maxAllowed": "Maximum {max} images allowed",
+    "clickOrDrag": "Click or drag to upload",
+    "uploading": "Uploading..."
+  },
+  "Availability": {
+    "label": "Availability",
+    "open": "Open",
+    "closed": "Closed",
+    "hours": "Hours",
+    "text": "Text",
+    "textPlaceholder": "e.g., By appointment",
+    "openToday": "Open today: {hours}",
+    "opensDay": "Opens {day}",
+    "opensAt": "at {time}",
+    "openNow": "Open · {hours}"
+  },
+  "Days": {
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "mondayShort": "Mon",
+    "tuesdayShort": "Tue",
+    "wednesdayShort": "Wed",
+    "thursdayShort": "Thu",
+    "fridayShort": "Fri",
+    "saturdayShort": "Sat",
+    "sundayShort": "Sun"
+  },
+  "AdminLogin": {
+    "title": "Studi Aperti",
+    "subtitle": "Admin Login",
+    "checkEmail": "Check your email",
+    "magicLinkSent": "We sent a magic link to <strong>{email}</strong>. Click the link in your email to sign in.",
+    "tryDifferent": "Try a different email",
+    "emailLabel": "Email",
+    "emailPlaceholder": "your@email.com",
+    "sendMagicLink": "Send Magic Link",
+    "sending": "Sending...",
+    "onlyAuthorized": "Only authorized admins can sign in."
+  },
+  "Admin": {
+    "mobileTitle": "Studi Aperti Admin",
+    "dashboardTitle": "Admin Dashboard",
+    "pendingListings": "Pending Listings",
+    "allListings": "All Listings",
+    "tags": "Tags",
+    "admins": "Admins",
+    "signOut": "Sign Out",
+    "signOutShort": "Out",
+    "noPending": "No pending listings to review",
+    "pending": "pending"
+  },
+  "AdminListings": {
+    "title": "All Listings",
+    "all": "all",
+    "approved": "approved",
+    "pending": "pending",
+    "rejected": "rejected",
+    "removed": "removed",
+    "nameHeader": "Name",
+    "statusHeader": "Status",
+    "createdHeader": "Created",
+    "actionsHeader": "Actions",
+    "noListings": "No listings found",
+    "edit": "Edit",
+    "remove": "Remove",
+    "restore": "Restore",
+    "back": "Back",
+    "notFound": "Listing not found",
+    "loading": "Loading...",
+    "approve": "Approve",
+    "reject": "Reject",
+    "saving": "...",
+    "rejectConfirm": "Reject this listing?",
+    "editListing": "Edit Listing",
+    "removeConfirm": "Remove this listing?",
+    "backToPreview": "Back to preview",
+    "editing": "Editing",
+    "noContact": "No contact info provided",
+    "submitted": "Submitted {date}",
+    "address": "Address",
+    "availability": "Availability",
+    "contact": "Contact",
+    "updateSuccess": "Listing updated successfully!"
+  },
+  "AdminTags": {
+    "title": "Tag Management",
+    "placeholder": "New tag name...",
+    "addTag": "Add Tag",
+    "noTags": "No tags yet",
+    "loading": "Loading...",
+    "delete": "Delete",
+    "deleteConfirm": "Delete tag \"{name}\"?"
+  },
+  "AdminAdmins": {
+    "title": "Admin Management",
+    "placeholder": "Email address...",
+    "invite": "Invite",
+    "loading": "Loading...",
+    "inviteSuccess": "Invited {email} as admin",
+    "removeConfirm": "Remove {email} as admin?",
+    "added": "Added {date}",
+    "you": "(you)",
+    "remove": "Remove"
+  },
+  "AdminCallback": {
+    "signingIn": "Signing you in...",
+    "loading": "Loading...",
+    "backToLogin": "Back to login",
+    "notAuthorized": "You are not authorized as an admin.",
+    "loginFailed": "Login failed: {message}",
+    "linkExpired": "Login failed or link expired. Please try again."
+  },
+  "AdminAcceptInvite": {
+    "settingUp": "Setting up your account...",
+    "redirecting": "You'll be redirected to the admin dashboard.",
+    "invalidLink": "Invalid or expired invite link. Please request a new invite.",
+    "goToLogin": "Go to login"
+  },
+  "Common": {
+    "somethingWrong": "Something went wrong"
+  }
+}

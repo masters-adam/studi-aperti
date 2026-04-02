@@ -4,6 +4,7 @@ import { useRef, useCallback, useEffect, useState } from "react";
 import Map, { Marker, type MapRef } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { useLocale, useTranslations } from "next-intl";
 import type { Listing } from "@/lib/types";
 import { MapPin } from "./map-pin";
 
@@ -19,6 +20,13 @@ export function MapView({
   const mapRef = useRef<MapRef>(null);
   const hasFitBounds = useRef(false);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const locale = useLocale() as "en" | "it";
+  const t = useTranslations("Homepage");
+
+  const getLocalizedName = (listing: Listing) =>
+    listing.translations?.name?.[locale] || listing.name;
+  const getLocalizedDescription = (listing: Listing) =>
+    listing.translations?.description?.[locale] || listing.description;
 
   // Fit bounds to all listings on initial load
   useEffect(() => {
@@ -105,11 +113,11 @@ export function MapView({
                   /* Hover label: name card with pin tail */
                   <div className="flex flex-col items-center">
                     <div className="rounded-lg bg-terracotta-dark text-white px-3 py-1.5 shadow-lg max-w-[180px]">
-                      <p className="text-xs font-medium truncate">{listing.name}</p>
-                      {listing.description && (
+                      <p className="text-xs font-medium truncate">{getLocalizedName(listing)}</p>
+                      {getLocalizedDescription(listing) && (
                         <p className="text-[10px] text-white/70 truncate mt-0.5">
-                          {listing.description.slice(0, 40)}
-                          {listing.description.length > 40 ? "..." : ""}
+                          {getLocalizedDescription(listing).slice(0, 40)}
+                          {getLocalizedDescription(listing).length > 40 ? "..." : ""}
                         </p>
                       )}
                     </div>
@@ -149,7 +157,7 @@ export function MapView({
           <line x1="21" y1="3" x2="14" y2="10" />
           <line x1="3" y1="21" x2="10" y2="14" />
         </svg>
-        Show All
+        {t("showAll")}
       </button>
     </div>
   );

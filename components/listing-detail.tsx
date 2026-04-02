@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Map, { Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { Listing } from "@/lib/types";
+import { useLocalizedListing } from "@/lib/use-localized-listing";
 import { TagBadge } from "./tag-badge";
 import { AvailabilityFull } from "./availability-display";
 import { MapPin } from "./map-pin";
@@ -106,13 +108,16 @@ function DetailCarousel({ images, name }: { images: string[]; name: string }) {
 }
 
 export function ListingDetail({ listing }: { listing: Listing }) {
+  const t = useTranslations("ListingDetail");
+  const localized = useLocalizedListing(listing);
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 md:px-8">
       <div className="flex flex-col md:flex-row md:gap-10">
         {/* Left column — info */}
         <div className="flex-1 min-w-0">
           {/* Header */}
-          <h1 className="text-4xl text-charcoal leading-tight">{listing.name}</h1>
+          <h1 className="text-4xl text-charcoal leading-tight">{localized.name}</h1>
 
           {listing.tags.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-1.5">
@@ -145,7 +150,7 @@ export function ListingDetail({ listing }: { listing: Listing }) {
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                     <polyline points="22,6 12,13 2,6"/>
                   </svg>
-                  Email
+                  {t("email")}
                 </a>
               )}
               {listing.website && (
@@ -160,7 +165,7 @@ export function ListingDetail({ listing }: { listing: Listing }) {
                     <line x1="2" y1="12" x2="22" y2="12"/>
                     <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
                   </svg>
-                  Website
+                  {t("website")}
                 </a>
               )}
               <a
@@ -172,7 +177,7 @@ export function ListingDetail({ listing }: { listing: Listing }) {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <polygon points="3 11 22 2 13 21 11 13 3 11"/>
                 </svg>
-                Directions
+                {t("directions")}
               </a>
             </div>
           )}
@@ -181,18 +186,18 @@ export function ListingDetail({ listing }: { listing: Listing }) {
           <hr className="my-6 border-cream-dark" />
 
           {/* Description */}
-          {listing.description && (
+          {localized.description && (
             <div className="mb-6">
-              <h2 className="text-lg text-charcoal mb-2">About</h2>
+              <h2 className="text-lg text-charcoal mb-2">{t("about")}</h2>
               <p className="text-sm text-charcoal leading-relaxed whitespace-pre-line">
-                {listing.description}
+                {localized.description}
               </p>
             </div>
           )}
 
           {/* Hours */}
           <div className="mb-6">
-            <h2 className="text-lg text-charcoal mb-3">Hours</h2>
+            <h2 className="text-lg text-charcoal mb-3">{t("hours")}</h2>
             <AvailabilityFull availability={listing.availability} />
           </div>
         </div>
@@ -200,7 +205,7 @@ export function ListingDetail({ listing }: { listing: Listing }) {
         {/* Right column — images, map, address */}
         <div className="w-full md:w-[400px] flex-shrink-0 mt-6 md:mt-0">
           {/* Image carousel */}
-          <DetailCarousel images={listing.images} name={listing.name} />
+          <DetailCarousel images={listing.images} name={localized.name} />
 
           {/* Mini map */}
           <div className="mt-4 overflow-hidden rounded-xl border border-cream-dark">
@@ -227,7 +232,7 @@ export function ListingDetail({ listing }: { listing: Listing }) {
             </div>
 
             <div className="bg-white p-3">
-              <p className="text-sm font-medium text-charcoal">{listing.name}</p>
+              <p className="text-sm font-medium text-charcoal">{localized.name}</p>
               <p className="text-xs text-warm-gray mt-0.5">{listing.address}</p>
               <a
                 href={`https://www.google.com/maps/dir/?api=1&destination=${listing.lat},${listing.lng}`}
@@ -235,7 +240,7 @@ export function ListingDetail({ listing }: { listing: Listing }) {
                 rel="noopener noreferrer"
                 className="text-xs text-terracotta hover:underline mt-1 inline-block"
               >
-                Get Directions
+                {t("getDirections")}
               </a>
             </div>
           </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import type { Availability, AvailabilityDay } from "@/lib/types";
 
 const DAYS = [
@@ -12,16 +13,6 @@ const DAYS = [
   "sunday",
 ] as const;
 
-const DAY_LABELS: Record<string, string> = {
-  monday: "Monday",
-  tuesday: "Tuesday",
-  wednesday: "Wednesday",
-  thursday: "Thursday",
-  friday: "Friday",
-  saturday: "Saturday",
-  sunday: "Sunday",
-};
-
 export function AvailabilityEditor({
   availability,
   onChange,
@@ -29,6 +20,8 @@ export function AvailabilityEditor({
   availability: Availability;
   onChange: (a: Availability) => void;
 }) {
+  const tDays = useTranslations("Days");
+  const tAvail = useTranslations("Availability");
   const updateDay = (day: (typeof DAYS)[number], value: AvailabilityDay) => {
     onChange({ ...availability, [day]: value });
   };
@@ -47,7 +40,7 @@ export function AvailabilityEditor({
   return (
     <div className="space-y-2">
       <label className="mb-1 block text-sm font-medium text-charcoal">
-        Availability
+        {tAvail("label")}
       </label>
       <div className="space-y-2 rounded-lg border border-warm-gray-light bg-white p-4">
         {DAYS.map((day) => {
@@ -60,7 +53,7 @@ export function AvailabilityEditor({
               <div className="flex items-center gap-3">
                 {/* Day name */}
                 <span className="w-24 text-sm font-medium text-charcoal">
-                  {DAY_LABELS[day]}
+                  {tDays(day)}
                 </span>
 
                 {/* Open/Closed toggle */}
@@ -84,7 +77,7 @@ export function AvailabilityEditor({
                   />
                 </button>
                 <span className="text-xs text-warm-gray w-12">
-                  {open ? "Open" : "Closed"}
+                  {open ? tAvail("open") : tAvail("closed")}
                 </span>
 
                 {/* Mode + inputs (only when open) */}
@@ -101,8 +94,8 @@ export function AvailabilityEditor({
                       }}
                       className="rounded-lg border border-warm-gray-light bg-white px-2 py-1.5 text-xs text-charcoal focus:border-terracotta focus:outline-none"
                     >
-                      <option value="hours">Hours</option>
-                      <option value="text">Text</option>
+                      <option value="hours">{tAvail("hours")}</option>
+                      <option value="text">{tAvail("text")}</option>
                     </select>
 
                     {mode === "hours" && current?.type === "hours" && (
@@ -134,7 +127,7 @@ export function AvailabilityEditor({
                         onChange={(e) =>
                           updateDay(day, { type: "text", value: e.target.value })
                         }
-                        placeholder="e.g., By appointment"
+                        placeholder={tAvail("textPlaceholder")}
                         className="flex-1 min-w-[120px] rounded-lg border border-warm-gray-light bg-white px-2 py-1.5 text-xs placeholder:text-warm-gray focus:border-terracotta focus:outline-none"
                       />
                     )}

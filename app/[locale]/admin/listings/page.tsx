@@ -1,9 +1,10 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import {
   getAllListings,
   adminRemoveListing,
   adminRestoreListing,
 } from "@/lib/actions/admin";
+import { getTranslations } from "next-intl/server";
 
 export const dynamic = "force-dynamic";
 
@@ -21,14 +22,17 @@ export default async function AdminListingsPage({
 }) {
   const { status: statusFilter } = await searchParams;
   const listings = await getAllListings(statusFilter || "all");
+  const t = await getTranslations("AdminListings");
+
+  const statusKeys = ["all", "approved", "pending", "rejected", "removed"] as const;
 
   return (
     <div>
-      <h1 className="text-2xl text-charcoal mb-4">All Listings</h1>
+      <h1 className="text-2xl text-charcoal mb-4">{t("title")}</h1>
 
       {/* Filter tabs */}
       <div className="flex gap-2 mb-6">
-        {["all", "approved", "pending", "rejected", "removed"].map((s) => (
+        {statusKeys.map((s) => (
           <Link
             key={s}
             href={`/admin/listings${s === "all" ? "" : `?status=${s}`}`}
@@ -38,29 +42,29 @@ export default async function AdminListingsPage({
                 : "bg-white text-charcoal hover:bg-cream-dark"
             }`}
           >
-            {s}
+            {t(s)}
           </Link>
         ))}
       </div>
 
       {listings.length === 0 ? (
         <div className="rounded-xl bg-white p-8 text-center shadow-sm">
-          <p className="text-warm-gray">No listings found</p>
+          <p className="text-warm-gray">{t("noListings")}</p>
         </div>
       ) : (
         <div className="overflow-x-auto rounded-xl bg-white shadow-sm">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-cream-dark text-left">
-                <th className="px-4 py-3 font-medium text-warm-gray">Name</th>
+                <th className="px-4 py-3 font-medium text-warm-gray">{t("nameHeader")}</th>
                 <th className="px-4 py-3 font-medium text-warm-gray">
-                  Status
+                  {t("statusHeader")}
                 </th>
                 <th className="px-4 py-3 font-medium text-warm-gray">
-                  Created
+                  {t("createdHeader")}
                 </th>
                 <th className="px-4 py-3 font-medium text-warm-gray">
-                  Actions
+                  {t("actionsHeader")}
                 </th>
               </tr>
             </thead>
@@ -97,7 +101,7 @@ export default async function AdminListingsPage({
                         href={`/admin/listings/${listing.id}`}
                         className="text-xs text-terracotta hover:underline"
                       >
-                        Edit
+                        {t("edit")}
                       </Link>
                       {listing.status === "approved" && (
                         <form
@@ -107,7 +111,7 @@ export default async function AdminListingsPage({
                             type="submit"
                             className="text-xs text-red-600 hover:underline"
                           >
-                            Remove
+                            {t("remove")}
                           </button>
                         </form>
                       )}
@@ -119,7 +123,7 @@ export default async function AdminListingsPage({
                             type="submit"
                             className="text-xs text-olive hover:underline"
                           >
-                            Restore
+                            {t("restore")}
                           </button>
                         </form>
                       )}

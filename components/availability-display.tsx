@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import type { Availability, AvailabilityDay } from "@/lib/types";
 
 const DAYS = [
@@ -13,31 +14,21 @@ const DAYS = [
   "sunday",
 ] as const;
 
-const DAY_LABELS: Record<string, string> = {
-  monday: "Mon",
-  tuesday: "Tue",
-  wednesday: "Wed",
-  thursday: "Thu",
-  friday: "Fri",
-  saturday: "Sat",
-  sunday: "Sun",
+const DAY_SHORT_KEYS: Record<string, string> = {
+  monday: "mondayShort",
+  tuesday: "tuesdayShort",
+  wednesday: "wednesdayShort",
+  thursday: "thursdayShort",
+  friday: "fridayShort",
+  saturday: "saturdayShort",
+  sunday: "sundayShort",
 };
 
-const DAY_LABELS_FULL: Record<string, string> = {
-  monday: "Monday",
-  tuesday: "Tuesday",
-  wednesday: "Wednesday",
-  thursday: "Thursday",
-  friday: "Friday",
-  saturday: "Saturday",
-  sunday: "Sunday",
-};
-
-function formatDay(day: AvailabilityDay | undefined): string {
-  if (!day) return "Closed";
+function formatDay(day: AvailabilityDay | undefined, closedLabel: string): string {
+  if (!day) return closedLabel;
   switch (day.type) {
     case "closed":
-      return "Closed";
+      return closedLabel;
     case "hours":
       return `${day.open} – ${day.close}`;
     case "text":
@@ -59,6 +50,8 @@ export function AvailabilitySummary({
 }: {
   availability: Availability;
 }) {
+  const tDays = useTranslations("Days");
+  const tAvail = useTranslations("Availability");
   const todayIdx = getTodayIndex();
   const today = DAYS[todayIdx];
   const todayInfo = availability[today];
@@ -70,7 +63,7 @@ export function AvailabilitySummary({
   if (isOpenDay(todayInfo)) {
     return (
       <span className="text-xs text-olive font-medium">
-        Open today: {formatDay(todayInfo)}
+        {tAvail("openToday", { hours: formatDay(todayInfo, tAvail("closed")) })}
       </span>
     );
   }
@@ -81,18 +74,19 @@ export function AvailabilitySummary({
     const nextDay = DAYS[nextIdx];
     const nextInfo = availability[nextDay];
     if (isOpenDay(nextInfo)) {
+      const fullDayName = tDays(nextDay);
       const timeStr =
-        nextInfo?.type === "hours" ? ` at ${nextInfo.open}` : "";
+        nextInfo?.type === "hours" ? ` ${tAvail("opensAt", { time: nextInfo.open })}` : "";
       return (
         <span className="text-xs text-warm-gray">
-          Opens {DAY_LABELS_FULL[nextDay]}
+          {tAvail("opensDay", { day: fullDayName })}
           {timeStr}
         </span>
       );
     }
   }
 
-  return <span className="text-xs text-warm-gray">Closed</span>;
+  return <span className="text-xs text-warm-gray">{tAvail("closed")}</span>;
 }
 
 export function AvailabilityCompact({
@@ -100,6 +94,8 @@ export function AvailabilityCompact({
 }: {
   availability: Availability;
 }) {
+  const tDays = useTranslations("Days");
+  const tAvail = useTranslations("Availability");
   const [expanded, setExpanded] = useState(false);
   const todayIdx = getTodayIndex();
   const today = DAYS[todayIdx];
@@ -118,9 +114,10 @@ export function AvailabilityCompact({
       const nextDay = DAYS[nextIdx];
       const nextInfo = availability[nextDay];
       if (isOpenDay(nextInfo)) {
+        const fullDayName = tDays(nextDay);
         const timeStr =
-          nextInfo?.type === "hours" ? ` at ${nextInfo.open}` : "";
-        nextOpenStr = `Opens ${DAY_LABELS_FULL[nextDay]}${timeStr}`;
+          nextInfo?.type === "hours" ? ` ${tAvail("opensAt", { time: nextInfo.open })}` : "";
+        nextOpenStr = `${tAvail("opensDay", { day: fullDayName })}${timeStr}`;
         break;
       }
     }
@@ -139,7 +136,7 @@ export function AvailabilityCompact({
           className={`inline-block h-2 w-2 rounded-full ${isOpen ? "bg-olive" : "bg-warm-gray-light"}`}
         />
         <span className={isOpen ? "text-olive font-medium" : "text-warm-gray"}>
-          {isOpen ? `Open · ${formatDay(todayInfo)}` : nextOpenStr || "Closed"}
+          {isOpen ? tAvail("openNow", { hours: formatDay(todayInfo, tAvail("closed")) }) : nextOpenStr || tAvail("closed")}
         </span>
         <svg
           width="12"
@@ -161,8 +158,8 @@ export function AvailabilityCompact({
               key={day}
               className={`flex gap-3 text-xs ${i === todayIdx ? "font-medium text-charcoal" : "text-warm-gray"}`}
             >
-              <span className="w-8">{DAY_LABELS[day]}</span>
-              <span>{formatDay(availability[day])}</span>
+              <span className="w-8">{tDays(DAY_SHORT_KEYS[day])}</span>
+              <span>{formatDay(availability[day], tAvail("closed"))}</span>
             </div>
           ))}
         </div>
@@ -176,6 +173,8 @@ export function AvailabilityFull({
 }: {
   availability: Availability;
 }) {
+  const tDays = useTranslations("Days");
+  const tAvail = useTranslations("Availability");
   const hasAny = DAYS.some((d) => availability[d]);
   if (!hasAny) return null;
 
@@ -188,8 +187,8 @@ export function AvailabilityFull({
           key={day}
           className={`contents ${i === todayIdx ? "font-medium" : ""}`}
         >
-          <span className="text-charcoal">{DAY_LABELS[day]}</span>
-          <span className="text-warm-gray">{formatDay(availability[day])}</span>
+          <span className="text-charcoal">{tDays(DAY_SHORT_KEYS[day])}</span>
+          <span className="text-warm-gray">{formatDay(availability[day], tAvail("closed"))}</span>
         </div>
       ))}
     </div>
