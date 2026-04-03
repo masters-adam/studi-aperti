@@ -30,17 +30,17 @@ export function ListingModal({
 
   return (
     <div
-      className="fixed inset-0 z-40 flex items-start justify-center bg-black/50 backdrop-blur-sm overflow-y-auto"
+      className="fixed inset-0 z-40 flex items-start justify-center bg-black/50 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-6xl my-4 mx-4 min-h-[85vh] rounded-2xl bg-cream shadow-2xl overflow-hidden"
+        className="relative w-full max-w-4xl my-4 mx-4 max-h-[calc(100vh-2rem)] rounded-2xl bg-cream shadow-2xl overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-charcoal shadow-sm hover:bg-white transition-colors text-lg"
+          className="sticky top-3 float-right mr-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-charcoal shadow-sm hover:bg-white transition-colors text-lg"
         >
           &times;
         </button>
