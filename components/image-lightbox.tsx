@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 
 export function ImageLightbox({
@@ -13,6 +13,7 @@ export function ImageLightbox({
   onClose: () => void;
 }) {
   const [index, setIndex] = useState(initialIndex);
+  const touchStartX = useRef<number | null>(null);
 
   const next = useCallback(() => {
     setIndex((i) => (i + 1) % images.length);
@@ -32,6 +33,20 @@ export function ImageLightbox({
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose, next, prev]);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const diff = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) prev();
+      else next();
+    }
+    touchStartX.current = null;
+  };
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
@@ -48,8 +63,10 @@ export function ImageLightbox({
       {/* Image */}
       <div
         className="relative flex items-center justify-center"
-        style={{ width: "92vw", height: "92vh" }}
+        style={{ width: "92vw", height: "85vh" }}
         onClick={(e) => e.stopPropagation()}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         <Image
           src={images[index]}
@@ -60,7 +77,7 @@ export function ImageLightbox({
         />
       </div>
 
-      {/* Nav arrows */}
+      {/* Nav arrows — always visible */}
       {images.length > 1 && (
         <>
           <button
@@ -68,7 +85,7 @@ export function ImageLightbox({
               e.stopPropagation();
               prev();
             }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white text-lg hover:bg-white/20 transition-colors"
+            className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-white/20 text-white text-2xl hover:bg-white/30 transition-colors"
           >
             &#8249;
           </button>
@@ -77,7 +94,7 @@ export function ImageLightbox({
               e.stopPropagation();
               next();
             }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white text-lg hover:bg-white/20 transition-colors"
+            className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-white/20 text-white text-2xl hover:bg-white/30 transition-colors"
           >
             &#8250;
           </button>

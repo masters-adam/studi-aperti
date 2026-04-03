@@ -11,15 +11,18 @@ export function Header() {
   return (
     <header className="border-b border-cream-dark bg-white/80 backdrop-blur-sm">
       <div className="flex items-center justify-between px-4 py-1.5 md:px-6 md:py-2">
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="flex items-center gap-2">
           <Image
             src="/images/logo.png"
             alt="Studi Aperti"
             width={120}
             height={48}
-            className="h-10 md:h-12 w-auto"
+            className="h-9 md:h-11 w-auto"
             priority
           />
+          <span className="text-lg md:text-xl font-bold text-terracotta">
+            {t("title")}
+          </span>
         </Link>
         <nav className="flex items-center gap-2 md:gap-4 text-xs md:text-sm">
           <Link

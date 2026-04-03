@@ -7,7 +7,6 @@ export function MapPin({ active }: { active?: boolean }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       style={{
-        transform: `translate(-50%, -100%)`,
         transition: "all 0.2s ease",
         filter: active ? "drop-shadow(0 2px 4px rgba(0,0,0,0.3))" : "none",
       }}
