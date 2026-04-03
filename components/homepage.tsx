@@ -72,6 +72,7 @@ export function Homepage({ listings }: { listings: Listing[] }) {
             listings={filtered}
             selectedId={selectedId}
             onSelectListing={setSelectedId}
+            onOpenDetail={handleOpenDetail}
           />
         </div>
       </div>

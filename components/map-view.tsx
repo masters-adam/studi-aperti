@@ -61,10 +61,12 @@ export function MapView({
   listings,
   selectedId,
   onSelectListing,
+  onOpenDetail,
 }: {
   listings: Listing[];
   selectedId: string | null;
   onSelectListing: (id: string) => void;
+  onOpenDetail?: (listing: Listing) => void;
 }) {
   const mapRef = useRef<MapRef>(null);
   const hasFitBounds = useRef(false);
@@ -150,6 +152,7 @@ export function MapView({
                 e.originalEvent.stopPropagation();
                 setHoveredId(null);
                 onSelectListing(listing.id);
+                if (onOpenDetail) onOpenDetail(listing);
               }}
               style={{ zIndex: isHovered ? 10 : isSelected ? 5 : 1 }}
             >
@@ -158,36 +161,59 @@ export function MapView({
                 onMouseLeave={() => setHoveredId(null)}
                 style={{ cursor: "pointer" }}
               >
-                {isHovered ? (
-                  /* Hover popup: big image carousel + name */
-                  <div className="flex flex-col items-center">
-                    <div className="rounded-xl bg-white shadow-xl overflow-hidden w-[280px]">
-                      <MapPopupCarousel images={listing.images} name={getLocalizedName(listing)} />
-                      <div className="px-3 py-2.5">
-                        <p className="text-sm font-medium text-charcoal truncate">{getLocalizedName(listing)}</p>
-                        {listing.tags.length > 0 && (
-                          <p className="text-xs text-warm-gray truncate mt-0.5">
-                            {listing.tags.slice(0, 3).join(" · ")}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <div
-                      className="w-0 h-0"
-                      style={{
-                        borderLeft: "8px solid transparent",
-                        borderRight: "8px solid transparent",
-                        borderTop: "8px solid white",
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <MapPin active={isSelected} />
-                )}
+                <MapPin active={isSelected || isHovered} />
               </div>
             </Marker>
           );
         })}
+
+        {/* Hover popup — rendered as separate marker above the pin */}
+        {hoveredId && (() => {
+          const listing = listings.find((l) => l.id === hoveredId);
+          if (!listing) return null;
+          return (
+            <Marker
+              key={`popup-${listing.id}`}
+              longitude={listing.lng}
+              latitude={listing.lat}
+              anchor="bottom"
+              style={{ zIndex: 20 }}
+            >
+              <div
+                className="mb-10 flex flex-col items-center pointer-events-auto"
+                onMouseEnter={() => setHoveredId(listing.id)}
+                onMouseLeave={() => setHoveredId(null)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setHoveredId(null);
+                  onSelectListing(listing.id);
+                  if (onOpenDetail) onOpenDetail(listing);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                <div className="rounded-xl bg-white shadow-xl overflow-hidden w-[280px]">
+                  <MapPopupCarousel images={listing.images} name={getLocalizedName(listing)} />
+                  <div className="px-3 py-2.5">
+                    <p className="text-sm font-medium text-charcoal truncate">{getLocalizedName(listing)}</p>
+                    {listing.tags.length > 0 && (
+                      <p className="text-xs text-warm-gray truncate mt-0.5">
+                        {listing.tags.slice(0, 3).join(" · ")}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div
+                  className="w-0 h-0"
+                  style={{
+                    borderLeft: "8px solid transparent",
+                    borderRight: "8px solid transparent",
+                    borderTop: "8px solid white",
+                  }}
+                />
+              </div>
+            </Marker>
+          );
+        })()}
       </Map>
       <button
         onClick={resetZoom}
