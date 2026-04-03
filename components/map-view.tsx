@@ -71,6 +71,8 @@ export function MapView({
   const mapRef = useRef<MapRef>(null);
   const hasFitBounds = useRef(false);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [userLocation, setUserLocation] = useState<{ lng: number; lat: number } | null>(null);
+  const [locatingUser, setLocatingUser] = useState(false);
   const locale = useLocale() as "en" | "it";
   const t = useTranslations("Homepage");
 
@@ -124,6 +126,23 @@ export function MapView({
     });
   }, [listings]);
 
+  const goToMyLocation = useCallback(() => {
+    if (!navigator.geolocation) return;
+    setLocatingUser(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { longitude, latitude } = pos.coords;
+        setUserLocation({ lng: longitude, lat: latitude });
+        setLocatingUser(false);
+        mapRef.current?.flyTo({ center: [longitude, latitude], zoom: 13, duration: 1000 });
+      },
+      () => {
+        setLocatingUser(false);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }, []);
+
   return (
     <div className="relative h-full w-full">
       <Map
@@ -131,7 +150,7 @@ export function MapView({
         initialViewState={{
           longitude: 12.17,
           latitude: 43.47,
-          zoom: 11,
+          zoom: 9,
         }}
         style={{ width: "100%", height: "100%" }}
         mapStyle="mapbox://styles/mapbox/outdoors-v12"
@@ -214,28 +233,66 @@ export function MapView({
             </Marker>
           );
         })()}
+        {/* User location marker */}
+        {userLocation && (
+          <Marker
+            longitude={userLocation.lng}
+            latitude={userLocation.lat}
+            anchor="center"
+            style={{ zIndex: 3 }}
+          >
+            <div className="relative">
+              <div className="h-4 w-4 rounded-full bg-blue-500 border-2 border-white shadow-md" />
+              <div className="absolute inset-0 h-4 w-4 rounded-full bg-blue-500 animate-ping opacity-30" />
+            </div>
+          </Marker>
+        )}
       </Map>
-      <button
-        onClick={resetZoom}
-        className="absolute top-3 right-3 z-10 rounded-lg bg-white px-3 py-2 text-xs font-medium text-charcoal shadow-md hover:bg-cream transition-colors"
-        title="Show all studios"
-      >
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className="inline mr-1 -mt-0.5"
+
+      {/* Map controls */}
+      <div className="absolute top-3 right-3 z-10 flex flex-col gap-2">
+        <button
+          onClick={resetZoom}
+          className="rounded-lg bg-white px-3 py-2 text-xs font-medium text-charcoal shadow-md hover:bg-cream transition-colors"
+          title="Show all studios"
         >
-          <polyline points="15 3 21 3 21 9" />
-          <polyline points="9 21 3 21 3 15" />
-          <line x1="21" y1="3" x2="14" y2="10" />
-          <line x1="3" y1="21" x2="10" y2="14" />
-        </svg>
-        {t("showAll")}
-      </button>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className="inline mr-1 -mt-0.5"
+          >
+            <polyline points="15 3 21 3 21 9" />
+            <polyline points="9 21 3 21 3 15" />
+            <line x1="21" y1="3" x2="14" y2="10" />
+            <line x1="3" y1="21" x2="10" y2="14" />
+          </svg>
+          {t("showAll")}
+        </button>
+        <button
+          onClick={goToMyLocation}
+          disabled={locatingUser}
+          className="rounded-lg bg-white px-3 py-2 text-xs font-medium text-charcoal shadow-md hover:bg-cream transition-colors disabled:opacity-50"
+          title="My location"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className="inline mr-1 -mt-0.5"
+          >
+            <circle cx="12" cy="12" r="3" />
+            <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+          </svg>
+          {locatingUser ? "..." : t("myLocation")}
+        </button>
+      </div>
     </div>
   );
 }

@@ -24,7 +24,8 @@
     "viewing": "Visualizzando {start}–{end} di {total} {total, plural, one {studio} other {studi}}",
     "noStudios": "Nessuno studio trovato",
     "all": "Tutti",
-    "showAll": "Mostra Tutti"
+    "showAll": "Mostra Tutti",
+    "myLocation": "Vicino a Me"
   },
   "MobileToggle": {
     "listView": "LISTA",

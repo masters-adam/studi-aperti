@@ -24,7 +24,8 @@
     "viewing": "Viewing {start}–{end} of {total} {total, plural, one {studio} other {studios}}",
     "noStudios": "No studios found",
     "all": "All",
-    "showAll": "Show All"
+    "showAll": "Show All",
+    "myLocation": "Near Me"
   },
   "MobileToggle": {
     "listView": "LIST VIEW",
