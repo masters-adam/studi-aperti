@@ -196,10 +196,11 @@ export function MapView({
               longitude={listing.lng}
               latitude={listing.lat}
               anchor="bottom"
+              offset={[0, -40]}
               style={{ zIndex: 20 }}
             >
               <div
-                className="mb-10 flex flex-col items-center pointer-events-auto"
+                className="flex flex-col items-center pointer-events-auto"
                 onMouseEnter={() => setHoveredId(listing.id)}
                 onMouseLeave={() => setHoveredId(null)}
                 onClick={(e) => {
