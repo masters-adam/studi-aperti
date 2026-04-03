@@ -5,8 +5,57 @@ import Map, { Marker, type MapRef } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useLocale, useTranslations } from "next-intl";
+import Image from "next/image";
 import type { Listing } from "@/lib/types";
 import { MapPin } from "./map-pin";
+
+function MapPopupCarousel({ images, name }: { images: string[]; name: string }) {
+  const [index, setIndex] = useState(0);
+
+  if (images.length === 0) return null;
+
+  return (
+    <div className="relative h-48 w-full">
+      <Image
+        src={images[index]}
+        alt={`${name} ${index + 1}`}
+        fill
+        className="object-cover"
+        sizes="280px"
+      />
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIndex((i) => (i - 1 + images.length) % images.length);
+            }}
+            className="absolute left-1.5 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full bg-white/80 text-charcoal shadow hover:bg-white transition-colors text-sm"
+          >
+            &#8249;
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIndex((i) => (i + 1) % images.length);
+            }}
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full bg-white/80 text-charcoal shadow hover:bg-white transition-colors text-sm"
+          >
+            &#8250;
+          </button>
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+            {images.map((_, i) => (
+              <span
+                key={i}
+                className={`block h-1.5 w-1.5 rounded-full ${i === index ? "bg-white" : "bg-white/50"}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
 export function MapView({
   listings,
@@ -110,22 +159,14 @@ export function MapView({
                 style={{ cursor: "pointer" }}
               >
                 {isHovered ? (
-                  /* Hover label: image + name card with pin tail */
+                  /* Hover popup: big image carousel + name */
                   <div className="flex flex-col items-center">
-                    <div className="rounded-lg bg-white shadow-lg overflow-hidden w-[200px]">
-                      {listing.images[0] && (
-                        <div className="relative h-24 w-full">
-                          <img
-                            src={listing.images[0]}
-                            alt={getLocalizedName(listing)}
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                      )}
-                      <div className="px-2.5 py-2">
-                        <p className="text-xs font-medium text-charcoal truncate">{getLocalizedName(listing)}</p>
+                    <div className="rounded-xl bg-white shadow-xl overflow-hidden w-[280px]">
+                      <MapPopupCarousel images={listing.images} name={getLocalizedName(listing)} />
+                      <div className="px-3 py-2.5">
+                        <p className="text-sm font-medium text-charcoal truncate">{getLocalizedName(listing)}</p>
                         {listing.tags.length > 0 && (
-                          <p className="text-[10px] text-warm-gray truncate mt-0.5">
+                          <p className="text-xs text-warm-gray truncate mt-0.5">
                             {listing.tags.slice(0, 3).join(" · ")}
                           </p>
                         )}
