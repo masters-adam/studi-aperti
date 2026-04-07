@@ -240,7 +240,7 @@ export function ListingDetail({ listing }: { listing: Listing }) {
                   href={`https://www.google.com/maps/dir/?api=1&destination=${listing.lat},${listing.lng}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-terracotta hover:underline mt-1 inline-block"
+                  className="text-xs text-blue-600 hover:text-blue-800 hover:underline mt-1 inline-block"
                 >
                   {t("getDirections")}
                 </a>
