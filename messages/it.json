@@ -8,6 +8,7 @@
   "Header": {
     "title": "Studi Aperti",
     "addListing": "Aggiungi Studio",
+    "about": "Chi Siamo",
     "manage": "Gestisci"
   },
   "LocaleSwitcher": {
@@ -35,6 +36,7 @@
     "phone": "Telefono",
     "email": "Email",
     "website": "Sito web",
+    "instagram": "Instagram",
     "directions": "Indicazioni"
   },
   "ListingDetail": {
@@ -42,6 +44,7 @@
     "hours": "Orari",
     "email": "Email",
     "website": "Sito web",
+    "instagram": "Instagram",
     "directions": "Indicazioni",
     "getDirections": "Ottieni indicazioni"
   },
@@ -79,8 +82,10 @@
     "emailLabel": "Email",
     "phoneLabel": "Telefono",
     "websiteLabel": "Sito web",
+    "instagramLabel": "Instagram",
     "emailPlaceholder": "tu@esempio.com",
     "websitePlaceholder": "https://...",
+    "instagramPlaceholder": "https://instagram.com/tuostudio",
     "editCodeTitle": "Codice di Modifica *",
     "editCodeDescription": "Scegli un codice a 4 cifre per modificare il tuo annuncio in seguito. Conservalo con cura!",
     "editCodeLabel": "Codice a 4 Cifre",
@@ -224,6 +229,23 @@
     "redirecting": "Sarai reindirizzato al pannello admin.",
     "invalidLink": "Link di invito non valido o scaduto. Richiedi un nuovo invito.",
     "goToLogin": "Vai al login"
+  },
+  "About": {
+    "metaTitle": "Chi Siamo — Studi Aperti",
+    "metaDescription": "Scopri Studi Aperti, la directory degli artisti dell'Alta Valle del Tevere, Umbria.",
+    "title": "Chi Siamo",
+    "whatIsTitle": "Cos'è Studi Aperti?",
+    "whatIsBody": "Studi Aperti è una directory di artisti dell'Alta Valle del Tevere in Umbria, Italia. Il sito ha due funzioni principali: un elenco scorrevole di artisti locali e una mappa interattiva che mostra le posizioni degli studi.\n\nChe tu sia un visitatore che esplora la regione o un locale alla ricerca di nuovi artisti nelle vicinanze, Studi Aperti rende facile trovare studi, vedere i loro lavori e ottenere indicazioni.",
+    "eventTitle": "L'Evento Studi Aperti",
+    "eventBody": "Stiamo organizzando un evento \"Studi Aperti\" che si svolgerà durante i mesi di giugno e luglio di ogni anno.\n\nDurante l'evento, gli artisti, gli studi e gli spazi espositivi partecipanti espongono il poster dell'evento con un codice QR che rimanda a questo sito. I visitatori possono quindi trovare artisti nelle vicinanze usando la mappa, oppure sfogliare i profili degli artisti e seguire le indicazioni per raggiungere i loro studi.",
+    "addListingTitle": "Come Aggiungere il Tuo Annuncio",
+    "addListingBody": "Come artista, gestisci il tuo profilo in autonomia. Basta cliccare il pulsante \"+\" nell'intestazione, che ti porta a una pagina dove puoi caricare:\n\n- Il nome del tuo studio o artista e una descrizione\n- Fino a cinque immagini del tuo lavoro o studio\n- Un segnaposto sulla mappa che mostra la tua posizione\n- Link al tuo sito web e ai social media\n- Informazioni di contatto (email e/o telefono)\n- Un orario per le ore di apertura del tuo studio\n\nDovrai anche impostare un codice di accesso a 4 cifre. Il tuo annuncio sarà pubblicato dopo una breve revisione da parte di un amministratore.",
+    "editListingTitle": "Come Modificare il Tuo Annuncio",
+    "editListingBody": "Per modificare il tuo annuncio in qualsiasi momento, clicca il link \"Gestisci\" nell'intestazione. Inserisci il nome del tuo studio o la tua email insieme al codice di accesso a 4 cifre, e potrai aggiornare tutti i dettagli del tuo annuncio. Le modifiche saranno pubblicate immediatamente.",
+    "disclaimerTitle": "Avvertenze",
+    "disclaimerData": "Studi Aperti e chiunque sia associato al sito non si assumono alcuna responsabilità per la protezione dei dati. Tutte le informazioni sono pubblicate da ogni artista a proprio rischio.",
+    "disclaimerEvent": "Per quanto riguarda l'evento stesso, Studi Aperti e chiunque sia associato al sito non si assumono alcuna responsabilità per le opere esposte dagli artisti, l'accuratezza delle informazioni sul sito, o la sicurezza dei partecipanti o di qualsiasi membro del pubblico che visiti un artista o il suo studio.",
+    "disclaimerPurpose": "Questo sito web è una piattaforma aperta con il solo scopo di mettere in contatto artisti e pubblico e viceversa."
   },
   "Common": {
     "somethingWrong": "Qualcosa è andato storto"

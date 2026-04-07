@@ -65,6 +65,7 @@ export default function AdminListingDetailPage() {
       contact_email: data.contact_email,
       contact_phone: data.contact_phone,
       website: data.website,
+      instagram: data.instagram,
       availability: data.availability,
       tags: data.tags,
       images: data.images,
@@ -218,7 +219,19 @@ export default function AdminListingDetailPage() {
                       </a>
                     </p>
                   )}
-                  {!listing.contact_email && !listing.contact_phone && !listing.website && (
+                  {listing.instagram && (
+                    <p>
+                      <a
+                        href={listing.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-terracotta hover:underline"
+                      >
+                        {listing.instagram}
+                      </a>
+                    </p>
+                  )}
+                  {!listing.contact_email && !listing.contact_phone && !listing.website && !listing.instagram && (
                     <p className="italic">{t("noContact")}</p>
                   )}
                 </div>

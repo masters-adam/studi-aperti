@@ -20,6 +20,7 @@ type FormData = {
   contact_email: string;
   contact_phone: string;
   website: string;
+  instagram: string;
   availability: Availability;
   tags: string[];
   images: string[];
@@ -37,6 +38,7 @@ function emptyForm(): FormData {
     contact_email: "",
     contact_phone: "",
     website: "",
+    instagram: "",
     availability: {},
     tags: [],
     images: [],
@@ -55,6 +57,7 @@ function fromListing(listing: Listing): FormData {
     contact_email: listing.contact_email,
     contact_phone: listing.contact_phone,
     website: listing.website,
+    instagram: listing.instagram,
     availability: listing.availability,
     tags: listing.tags,
     images: listing.images,
@@ -243,6 +246,16 @@ export function ListingForm({
             onChange={(e) => update("website", e.target.value)}
             className="w-full rounded-lg border border-warm-gray-light bg-white px-4 py-2.5 text-sm text-charcoal placeholder:text-warm-gray focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta"
             placeholder={t("websitePlaceholder")}
+          />
+        </div>
+        <div>
+          <label className="mb-1 block text-xs text-warm-gray">{t("instagramLabel")}</label>
+          <input
+            type="url"
+            value={form.instagram}
+            onChange={(e) => update("instagram", e.target.value)}
+            className="w-full rounded-lg border border-warm-gray-light bg-white px-4 py-2.5 text-sm text-charcoal placeholder:text-warm-gray focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta"
+            placeholder={t("instagramPlaceholder")}
           />
         </div>
       </fieldset>

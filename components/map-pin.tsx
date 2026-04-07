@@ -13,7 +13,7 @@ export function MapPin({ active }: { active?: boolean }) {
     >
       <path
         d="M14 0C6.268 0 0 6.268 0 14c0 10.5 14 20 14 20s14-9.5 14-20C28 6.268 21.732 0 14 0z"
-        fill={active ? "#5F7D54" : "#7A9A6D"}
+        fill={active ? "#2D5E48" : "#3D7A5F"}
       />
       <circle cx="14" cy="13" r="5" fill="white" opacity="0.9" />
     </svg>

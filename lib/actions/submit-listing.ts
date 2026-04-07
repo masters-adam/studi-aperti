@@ -14,6 +14,7 @@ type SubmitData = {
   contact_email: string;
   contact_phone: string;
   website: string;
+  instagram: string;
   availability: Record<string, unknown>;
   tags: string[];
   images: string[];
@@ -39,6 +40,7 @@ export async function submitListing(
     contact_email: data.contact_email,
     contact_phone: data.contact_phone,
     website: data.website,
+    instagram: data.instagram,
     availability: data.availability,
     tags: data.tags,
     images: data.images,

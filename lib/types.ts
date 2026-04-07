@@ -30,6 +30,7 @@ export type Listing = {
   contact_email: string;
   contact_phone: string;
   website: string;
+  instagram: string;
   availability: Availability;
   tags: string[];
   images: string[];

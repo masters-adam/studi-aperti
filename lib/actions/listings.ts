@@ -8,7 +8,7 @@ export async function getApprovedListings(): Promise<Listing[]> {
   const { data, error } = await supabase
     .from("listings")
     .select(
-      "id, name, description, address, lat, lng, contact_email, contact_phone, website, availability, tags, images, translations, status, created_at, updated_at, removed_at"
+      "id, name, description, address, lat, lng, contact_email, contact_phone, website, instagram, availability, tags, images, translations, status, created_at, updated_at, removed_at"
     )
     .eq("status", "approved")
     .order("name");

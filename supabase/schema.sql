@@ -20,6 +20,7 @@ create table public.listings (
   contact_email text default '',
   contact_phone text default '',
   website text default '',
+  instagram text default '',
   availability jsonb default '{}'::jsonb,
   tags text[] default '{}',
   images text[] default '{}',

@@ -119,7 +119,7 @@ export function ListingDetail({ listing }: { listing: Listing }) {
         )}
 
         {/* Contact pills */}
-        {(listing.contact_phone || listing.contact_email || listing.website) && (
+        {(listing.contact_phone || listing.contact_email || listing.website || listing.instagram) && (
           <div className="mt-4 flex flex-wrap gap-2">
             {listing.contact_phone && (
               <a
@@ -157,6 +157,21 @@ export function ListingDetail({ listing }: { listing: Listing }) {
                   <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
                 </svg>
                 {t("website")}
+              </a>
+            )}
+            {listing.instagram && (
+              <a
+                href={listing.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-full border border-warm-gray-light px-4 py-2 text-sm text-charcoal hover:bg-cream transition-colors"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                </svg>
+                {t("instagram")}
               </a>
             )}
             <a

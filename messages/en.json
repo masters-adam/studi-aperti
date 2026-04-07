@@ -8,6 +8,7 @@
   "Header": {
     "title": "Studi Aperti",
     "addListing": "Add Listing",
+    "about": "About",
     "manage": "Manage"
   },
   "LocaleSwitcher": {
@@ -35,6 +36,7 @@
     "phone": "Phone",
     "email": "Email",
     "website": "Website",
+    "instagram": "Instagram",
     "directions": "Directions"
   },
   "ListingDetail": {
@@ -42,6 +44,7 @@
     "hours": "Hours",
     "email": "Email",
     "website": "Website",
+    "instagram": "Instagram",
     "directions": "Directions",
     "getDirections": "Get Directions"
   },
@@ -79,8 +82,10 @@
     "emailLabel": "Email",
     "phoneLabel": "Phone",
     "websiteLabel": "Website",
+    "instagramLabel": "Instagram",
     "emailPlaceholder": "you@example.com",
     "websitePlaceholder": "https://...",
+    "instagramPlaceholder": "https://instagram.com/yourstudio",
     "editCodeTitle": "Edit Code *",
     "editCodeDescription": "Choose a 4-digit code to edit your listing later. Keep it safe!",
     "editCodeLabel": "4-Digit Code",
@@ -224,6 +229,23 @@
     "redirecting": "You'll be redirected to the admin dashboard.",
     "invalidLink": "Invalid or expired invite link. Please request a new invite.",
     "goToLogin": "Go to login"
+  },
+  "About": {
+    "metaTitle": "About — Studi Aperti",
+    "metaDescription": "Learn about Studi Aperti, the artist directory for the Upper Tiber Valley, Umbria.",
+    "title": "About Studi Aperti",
+    "whatIsTitle": "What is Studi Aperti?",
+    "whatIsBody": "Studi Aperti is an artist directory for the Upper Tiber Valley in Umbria, Italy. The site has two main features: a scrollable list of local artists and an interactive map showing studio locations.\n\nWhether you're a visitor exploring the region or a local looking to discover new artists nearby, Studi Aperti makes it easy to find studios, view their work, and get directions.",
+    "eventTitle": "The Open Studio Event",
+    "eventBody": "We are organising an \"Open Studio\" (Studi Aperti) event running during June and July each year.\n\nDuring the event, participating artists, studios, and exhibition spaces display the event poster with a QR code linking to this website. Visitors can then find artists nearby using the map, or browse artist profiles and follow directions to their studios.",
+    "addListingTitle": "How to Add Your Listing",
+    "addListingBody": "As an artist, you manage your own profile listing. Simply click the \"+\" button in the header, which takes you to a page where you can upload:\n\n- Your studio or artist name and description\n- Up to five images of your work or studio\n- A pin on the map showing your location\n- Links to your website and social media\n- Contact information (email and/or phone)\n- A timetable for your studio opening hours\n\nYou'll also set up a 4-digit access code. Your listing will be published once it has been briefly reviewed by an admin.",
+    "editListingTitle": "How to Edit Your Listing",
+    "editListingBody": "To modify your listing at any time, click the \"Manage\" link in the header. Enter your studio name or email along with your 4-digit access code, and you'll be able to update all of your listing details. Changes go live immediately.",
+    "disclaimerTitle": "Disclaimer",
+    "disclaimerData": "Studi Aperti, and anyone associated with the site, take no responsibility for data protection. All information is displayed by each artist at their own risk.",
+    "disclaimerEvent": "With regard to the event itself, Studi Aperti, and anyone associated with the site, take no responsibility or liability for the work displayed by artists, the accuracy of information on the site, or the safety of participants or any member of the public visiting an artist or their studio.",
+    "disclaimerPurpose": "This website is an open platform for the sole purpose of connecting artists with an audience and vice versa."
   },
   "Common": {
     "somethingWrong": "Something went wrong"

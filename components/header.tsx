@@ -38,6 +38,12 @@ export function Header() {
             +
           </Link>
           <Link
+            href="/about"
+            className="text-warm-gray hover:text-charcoal transition-colors"
+          >
+            {t("about")}
+          </Link>
+          <Link
             href="/manage-listing"
             className="text-warm-gray hover:text-charcoal transition-colors"
           >
