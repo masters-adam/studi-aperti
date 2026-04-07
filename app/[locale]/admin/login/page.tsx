@@ -7,13 +7,15 @@ import { useTranslations } from "next-intl";
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [mode, setMode] = useState<"magic" | "password">("magic");
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const t = useTranslations("AdminLogin");
   const locale = useLocale();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleMagicLink = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -33,6 +35,27 @@ export default function AdminLoginPage() {
       setError(signInError.message);
     } else {
       setSent(true);
+    }
+  };
+
+  const handlePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const supabase = createClient();
+
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    setLoading(false);
+
+    if (signInError) {
+      setError(signInError.message);
+    } else {
+      window.location.href = `/${locale}/admin`;
     }
   };
 
@@ -63,7 +86,7 @@ export default function AdminLoginPage() {
           </div>
         ) : (
           <form
-            onSubmit={handleSubmit}
+            onSubmit={mode === "magic" ? handleMagicLink : handlePassword}
             className="rounded-xl bg-white p-6 shadow-sm space-y-4"
           >
             {error && (
@@ -86,12 +109,43 @@ export default function AdminLoginPage() {
               />
             </div>
 
+            {mode === "password" && (
+              <div>
+                <label className="mb-1 block text-sm font-medium text-charcoal">
+                  {t("passwordLabel")}
+                </label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full rounded-lg border border-warm-gray-light bg-white px-4 py-2.5 text-sm text-charcoal focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta"
+                  placeholder={t("passwordPlaceholder")}
+                  required
+                />
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={loading}
               className="w-full rounded-lg bg-terracotta px-6 py-3 text-sm font-medium text-white hover:bg-terracotta-dark disabled:opacity-50 transition-colors"
             >
-              {loading ? t("sending") : t("sendMagicLink")}
+              {loading
+                ? t("sending")
+                : mode === "magic"
+                  ? t("sendMagicLink")
+                  : t("signIn")}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setMode(mode === "magic" ? "password" : "magic");
+                setError(null);
+              }}
+              className="w-full text-xs text-terracotta hover:underline"
+            >
+              {mode === "magic" ? t("usePassword") : t("useMagicLink")}
             </button>
 
             <p className="text-xs text-warm-gray text-center">

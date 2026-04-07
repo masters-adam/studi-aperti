@@ -148,7 +148,12 @@
     "emailLabel": "Email",
     "emailPlaceholder": "tua@email.com",
     "sendMagicLink": "Invia Link Magico",
-    "sending": "Invio...",
+    "signIn": "Accedi",
+    "sending": "Accesso in corso...",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Inserisci la tua password",
+    "usePassword": "Accedi con password",
+    "useMagicLink": "Accedi con link magico",
     "onlyAuthorized": "Solo gli amministratori autorizzati possono accedere."
   },
   "Admin": {
