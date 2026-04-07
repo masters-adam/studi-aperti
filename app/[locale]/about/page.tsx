@@ -62,19 +62,22 @@ export default async function AboutPage() {
             </p>
           </section>
 
-          {/* Disclaimer */}
-          <section className="rounded-xl bg-white p-6 shadow-sm border border-cream-dark">
-            <h2 className="text-xl text-charcoal mb-3">
-              {t("disclaimerTitle")}
-            </h2>
-            <div className="text-sm text-warm-gray leading-relaxed space-y-3">
-              <p>{t("disclaimerData")}</p>
-              <p>{t("disclaimerEvent")}</p>
-              <p className="text-xs italic">{t("disclaimerPurpose")}</p>
-            </div>
-          </section>
         </div>
       </main>
+
+      {/* Disclaimer footer */}
+      <footer className="border-t border-cream-dark mt-12">
+        <div className="mx-auto max-w-3xl px-4 py-8">
+          <h3 className="text-xs font-medium text-warm-gray uppercase tracking-wide mb-3">
+            {t("disclaimerTitle")}
+          </h3>
+          <div className="text-xs text-warm-gray/80 leading-relaxed space-y-2">
+            <p>{t("disclaimerData")}</p>
+            <p>{t("disclaimerEvent")}</p>
+            <p className="italic">{t("disclaimerPurpose")}</p>
+          </div>
+        </div>
+      </footer>
     </>
   );
 }
